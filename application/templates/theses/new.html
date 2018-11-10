@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+        <form method="POST" action="{{ url_for('theses_create') }}">
+            <fieldset>
+                <legend>Thesis form</legend>
+                <div style=font-size:20px; font-weight:bold; margin-left:150px;>
+                 
+                        {{ form.title.label }} <br />
+                        {{ form.title }}  <br />
+                   
+                        <ul>
+                            {% for error in form.title.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                   
+                        {{ form.description.label }} <br />
+                    
+                        {{ form.description }} <br />
+                   
+                        <ul>
+                            {% for error in form.description.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                       </ul>
+
+                        {{ form.science.label }}<br>
+                        {{ form.science }}
+                        
+                            <br />
+                        <input type="submit" value="Add a new thesis" />
+                   
+            </div>
+            </fieldset>
+        </form>
+   
+        {% endblock %}

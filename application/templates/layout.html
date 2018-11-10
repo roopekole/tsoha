@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="iso-8859-1">
+      <title>TodoApplication</title>
+    </head>
+    
+    <body>
+        {% if current_user.is_authenticated %}
+        <p>
+            Logged in as <b>{{ current_user.FirstName }}</b>. <a href="{{ url_for('auth_logout') }}">Logout</a>
+        </p>
+        {% else %}
+        <a href="{{ url_for('auth_login') }}">Login</a>
+        {% endif %}
+
+      <ul>
+	<li><a href="{{ url_for('theses_index') }}">List theses</a></li>
+	<li><a href="{{ url_for('theses_form') }}">Add a thesis</a></li>
+      </ul>
+      
+      {% block body %}
+      <p>
+	Content.
+      </p>
+      {% endblock %}
+    </body>
+  </html>

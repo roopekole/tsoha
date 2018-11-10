@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Thesis</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    {% for thesis in theses %}
+    <tr>
+      <td>{{ thesis.Title }}</td>
+      <td>{{ thesis.Description }}</td>
+      <td>
+	<form method="POST" action="{{ url_for('theses_set_done', thesis_id=thesis.ThesisID) }}">
+	  <input type="submit" value="Change status!"/>
+	</form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
