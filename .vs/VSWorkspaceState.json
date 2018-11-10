@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\application",
+    "\\application\\auth",
+    "\\application\\departments",
+    "\\application\\templates",
+    "\\application\\templates\\auth",
+    "\\application\\templates\\theses",
+    "\\application\\theses"
+  ],
+  "SelectedNode": "\\application\\theses.db",
+  "PreviewInSolutionExplorer": false
+}
