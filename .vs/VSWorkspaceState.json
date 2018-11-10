@@ -9,6 +9,6 @@
     "\\application\\templates\\theses",
     "\\application\\theses"
   ],
-  "SelectedNode": "\\application\\theses.db",
+  "SelectedNode": "\\application\\auth\\views.py",
   "PreviewInSolutionExplorer": false
 }
