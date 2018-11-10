@@ -9,7 +9,7 @@ class User(db.Model):
     LastName = db.Column(db.String(144), nullable=False)
     Password = db.Column(db.String(144), nullable=False)
     Admin = db.Column(db.Integer)
-    Department = db.Column(db.String, db.ForeignKey('department.DepartmentID'),
+    Department = db.Column(db.Integer, db.ForeignKey('department.DepartmentID'),
                            nullable=True)
     CreatedOn = db.Column(db.DateTime, default=db.func.current_timestamp())
     ModifiedOn = db.Column(db.DateTime, default=db.func.current_timestamp(),
