@@ -1,7 +1,8 @@
 # tsoha
 Tietokantasovellus, harjoitustyö
 
-Sovellus osoitteessa: https://morning-garden-53294.herokuapp.com/ (vieraile myös https://morning-garden-53294.herokuapp.com/demo)
+Sovellus osoitteessa: https://morning-garden-53294.herokuapp.com/ 
+(toimii tunnuksilla test@gmail.com / test)
 
 (Inspiraation lähde: http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Graduaiheet.html)
 
