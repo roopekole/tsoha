@@ -18,6 +18,7 @@ Please read Readme to learn about the application overview
 	   for contacting regarding the thesis proposal
 
 2. Supervisor use cases
+	
 	2.1. Authenticating to the system
 	- Execution of actions which require authentication and supervisor level authorization
 	2.2. Entering new theses proposals into the system
@@ -33,6 +34,7 @@ Please read Readme to learn about the application overview
 		* Changing the status of the thesis proposal (available / in progress / completed)
 
 3. Administrator use cases
+	
 	3.1. Authentication to the system
 	- Execution of actions which require authentication and administrator level authorization
 	3.2. Administering the theses (MVP scope to be determined)
