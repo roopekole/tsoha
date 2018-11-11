@@ -10,7 +10,12 @@ Please read Readme to learn about the application overview
 	 * by supervisor
 	 * by supervisor's department
 	 * by availability
-1.2 
+1.2 Contacts to thesis supervisors
+- Each thesis discloses supervisor's
+   * email
+   * name
+   * department
+   for contacting regarding the thesis proposal
 
 2. Supervisor use cases
 2.1 Authenticating to the system
