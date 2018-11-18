@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user
 
 from application import app, db, login_required
 from application.auth.models import User
-from application.auth.forms import LoginForm, AccountForm
+from application.auth.forms import LoginForm, AccountForm, NewAccountForm
 
 from application.departments.models import Dept
 
@@ -38,7 +38,7 @@ def accounts_index():
 @login_required(role="ADMIN")
 def account_form():
     departments = Dept.query.all()
-    form = AccountForm()
+    form = NewAccountForm()
     form.departments.choices = [(department.departmentID, department.name) for department in departments]
     return render_template("auth/new.html", form = form)
 
@@ -82,7 +82,7 @@ def user_delete(account_id):
 @app.route("/account/", methods=["POST"])
 @login_required(role="ADMIN")
 def account_create():
-    form = AccountForm(request.form)
+    form = NewAccountForm(request.form)
   
     #if not form.validate():
        # return render_template("auth/new.html", form = form)
