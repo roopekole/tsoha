@@ -46,10 +46,7 @@ def account_form():
 def account_edit(account_id):
     
     user = User.query.get(account_id)
-    
-   
-    print("############")
-    print(user.firstName)
+ 
     departments = Dept.query.all()
     
     form = AccountForm(username = user.userID, firstname = user.firstName, lastname = user.lastName,
