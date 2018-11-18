@@ -1,32 +1,32 @@
 from application import db
+from application.models import Base
 
-class User(db.Model):
+class User(Base):
 
     __tablename__ = "account"
   
-    UserID = db.Column(db.String(100), primary_key=True)
-    FirstName = db.Column(db.String(144), nullable=False)
-    LastName = db.Column(db.String(144), nullable=False)
-    Password = db.Column(db.String(144), nullable=False)
-    Admin = db.Column(db.Integer)
-    Department = db.Column(db.Integer, db.ForeignKey('department.DepartmentID'),
+    userID = db.Column(db.String(100), primary_key=True, nullable=False)
+    firstName = db.Column(db.String(144), nullable=False)
+    lastName = db.Column(db.String(144), nullable=False)
+    password = db.Column(db.String(144), nullable=False)
+    admin = db.Column(db.Integer)
+    department = db.Column(db.Integer, db.ForeignKey('department.departmentID'),
                            nullable=True)
-    CreatedOn = db.Column(db.DateTime, default=db.func.current_timestamp())
-    ModifiedOn = db.Column(db.DateTime, default=db.func.current_timestamp(),
-                              onupdate=db.func.current_timestamp())
+    
 
     #Relationships
     theses = db.relationship("Thesis", backref='account', lazy=True)
 
-    def __init__(self, userid, firstname, lastname, password, admin):
-        self.UserID = userid
-        self.FirstName = firstname
-        self.LastName = lastname
-        self.Password = password
-        self.Admin = 1
+    def __init__(self, userid, firstname, lastname, password, department, admin):
+        self.userID = userid
+        self.firstName = firstname
+        self.lastName = lastname
+        self.password = password
+        self.department = department
+        self.admin = admin
   
     def get_id(self):
-        return self.UserID
+        return self.userID
 
     def is_active(self):
         return True
@@ -36,3 +36,8 @@ class User(db.Model):
 
     def is_authenticated(self):
         return True
+
+    def roles(self):
+        return ["ADMIN"]
+
+   
