@@ -4,7 +4,7 @@ from application.models import Base, science2thesis
 class Thesis(Base):
     thesisID = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(144), nullable=False)
-    description = db.Column(db.String(144), nullable=False)
+    description = db.Column(db.String(500), nullable=False)
     level = db.Column(db.Boolean)
     author = db.Column(db.String(144), nullable=True)
     status = db.Column(db.Integer)

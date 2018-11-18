@@ -11,9 +11,9 @@ class LoginForm(FlaskForm):
 
 class NewAccountForm(FlaskForm):
     username = EmailField('Email address:', [validators.DataRequired(), validators.Email()], render_kw={"class": "form-control"})
-    password = PasswordField("Password:", [validators.DataRequired()], render_kw={"class": "form-control"})
-    firstname = StringField("First name:",[validators.DataRequired()], render_kw={"class": "form-control"})
-    lastname = StringField("Last name:",[validators.DataRequired()], render_kw={"class": "form-control"})
+    password = PasswordField("Password:", [validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
+    firstname = StringField("First name:",[validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
+    lastname = StringField("Last name:",[validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
     departments = SelectField('Department',  render_kw={"class": "form-control"})
     admin = BooleanField("Make an admin")
   
@@ -22,9 +22,9 @@ class NewAccountForm(FlaskForm):
 
 class AccountForm(FlaskForm):
     username = EmailField('Email address:', [validators.DataRequired(), validators.Email()], render_kw={"readonly class": "form-control"})
-    password = PasswordField("Password:", [validators.DataRequired()], render_kw={"class": "form-control"})
-    firstname = StringField("First name:",[validators.DataRequired()], render_kw={"class": "form-control"})
-    lastname = StringField("Last name:",[validators.DataRequired()], render_kw={"class": "form-control"})
+    password = PasswordField("Password:", [validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
+    firstname = StringField("First name:",[validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
+    lastname = StringField("Last name:",[validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
     departments = SelectField('Department',  render_kw={"class": "form-control"})
     admin = BooleanField("Make an admin")
   

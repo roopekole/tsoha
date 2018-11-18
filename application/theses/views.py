@@ -137,11 +137,20 @@ def theses_create():
         
     form = ThesisForm(request.form)
 
+    # Selct field validation requires choices... stupid maybe? also need to convert form requrest integer into choice list format to pass validator
+    """
+    sciences = Science.query.all()
+    form.science.choices = [(science.scienceID, science.name) for science in sciences]
+    
+    form.science.data = [(int(Science.query.get(form.science.data).scienceID), Science.query.get(form.science.data).name)]
+    print(form.science.data)
+    if not form.validate():
+        print("##################")
+        print(form.errors)
+        print(form.science.choices)
+        return render_template("theses/new.html", form = form)
 
-    #if not form.validate():
-     #   return render_template("theses/new.html", form = form)
-
-
+"""
     t = Thesis(form.title.data, form.description.data, current_user.userID)
     # Get the attached sciences
     science_ids = form.science.data 
