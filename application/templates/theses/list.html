@@ -1,22 +1,122 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <table>
+  
+{# Allow admin or the thesis topic author to edit the thesis #}
+    {% if (current_user.is_authenticated) %}
+<a class="btn btn-outline-primary" href=" {{ url_for('theses_form') }} " role="button">Create</a><br /><br />
+{% endif %}
+
+
+
+<table>
     <tr>
-      <th>Thesis</th>
-      <th>Status</th>
-      <th></th>
+        <th>Thesis</th>
+        <th>Supervisor</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>MSc. / BSc.</th>
+        {% if (current_user.is_authenticated) %}
+
+        <th>Assigned author</th>
+        {% endif %}
+        <th>Sciences</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Reserved</th>
+        <th colspan="2"></th>
+        
     </tr>
+    {# a Show error if there are no theses #}
+      {% if theses|length < 1 %}
+      <tr>
+          <td colspan="11">There are no theses in the system</td>
+      </tr>
+    {% else %}
     {% for thesis in theses %}
     <tr>
-      <td>{{ thesis.Title }}</td>
-      <td>{{ thesis.Description }}</td>
-      <td>
-	<form method="POST" action="{{ url_for('theses_set_done', thesis_id=thesis.ThesisID) }}">
-	  <input type="submit" value="Change status!"/>
-	</form>
-      </td>
-    </tr>
+        <td><b>{{ thesis.title }}</b><br />
+        <button type="button" class="btn btn-outline-secondary" title="{{ thesis.title }}" data-trigger="focus" data-container="body" data-toggle="popover" data-placement="right" data-content="{{thesis.description}}">
+        Description</button></td>
+  
+        {% set fullname = thesis.account.firstName + ' ' + thesis.account.lastName %}
+            <td>{{fullname}}</td>
+            <td>{{ thesis.userID }}</td>
+        
+            <td>{% for dept in depts %} {% if dept.departmentID == thesis.account.department %} {{dept.name}} {% endif %} {% endfor %}</td>
+  
+            {% if thesis.level %}
+            <td>Master</td>
+            {% elif thesis.level is not none %} 
+            <td>Bachelor</td>
+            {% else %}
+            <td />
+            {% endif %}
+        
+        {# Allow admin or supervisor to see the author #}
+
+        {% if (current_user.is_authenticated) %}
+            <td>{{ thesis.author if thesis.author}}</td>
+        {% endif %}
+            <td>                
+                <ul class="listings">
+                {% for id in thesis.sciences %}
+                    <li class="listings">{{id.name}}</li>
+                    {% endfor %}
+                </ul>
+                
+            </td>
+            
+            <td>
+            {% if thesis.status == 0 %}
+                <div class="alert alert-success" role="alert">
+                {{ statuses[thesis.status] }}
+            </div>
+            {% elif thesis.status == 1 %}
+                <div class="alert alert-warning" role="alert">
+                    {{ statuses[thesis.status] }}
+                </div>
+            {% elif thesis.status == 2 %}
+                <div class="alert alert-primary" role="alert">
+                    {{ statuses[thesis.status] }}
+                </div>
+            {% endif %}
+            </td>
+            <td>{{ thesis.createdOn }}</td>
+            <td>{{ thesis.reservedOn if thesis.reservedOn }}</td>
+
+
+
+
+            {# Allow admin or the thesis topic author to edit the thesis #}
+        <td>
+            {% if ((current_user.admin) or (current_user.userID == thesis.userID)) %}
+
+
+            <form method="GET" action="{{ url_for('thesis_edit', thesis_id=thesis.thesisID) }}">
+                <input class="btn btn-outline-primary" type="submit" value="Edit">
+
+
+            </form>
+
+            {# Allow admin to delete the thesis #}
+        </td>
+        <td>
+            {% endif %}
+            {% if (current_user.admin) %}
+
+            {% if thesis.status != 0 %}
+            <a tabindex="0" class="btn btn-outline-danger" role="button" data-toggle="popover" data-trigger="focus" data-content="Thesis status does not allow deletion">Delete</a>
+            {% else %}
+            <form method="POST" action="{{ url_for('thesis_delete', thesis_id=thesis.thesisID) }}">
+                <input class="btn btn-outline-danger" type="submit" value="Delete">
+            </form>
+            {% endif %}
+            {% endif %}
+        </td>
+
+</tr>
     {% endfor %}
-  </table>
+      {% endif %}
+</table>
 {% endblock %}

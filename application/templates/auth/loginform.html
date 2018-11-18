@@ -4,7 +4,7 @@
 {% block body %}
 {{ error }}
 <form method="POST" action="{{ url_for('auth_login') }}">
-    <table>
+    
         <tr>
             <td>
                 {{ form.username.label }}
@@ -21,9 +21,11 @@
                 {{ form.password }}
             </td>
         </tr>
-        <tr>
+        <br/>
+        <tr>   
+            
             <td colspan="2">
-                <input type="submit" value="Login" />
+                <input  class="btn btn-primary" type="submit" value="Login" />
             </td>
         </tr>
 </form>

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  
+{# Allow admin to manage deparments #}
+    {% if (current_user.admin) %}
+<a class="btn btn-outline-primary" href=" {{ url_for('dept_form') }} " role="button">Create</a><br /><br />
+
+<table>
+    <tr>
+        <th>Deparment</th>
+        <th>Created</th>
+        <th></th>
+    </tr>
+    {# a Show error if there are no deparments #}
+      {% if depts|length < 1 %}
+      <tr>
+          <td colspan="4">There are departments in the system - please create one</td>
+      </tr>
+    {% else %}
+    {% for dept in depts %}
+    <tr>
+        <td>{{ dept.name }}</td>
+        <td>{{ dept.createdOn }}</td>
+              
+
+        <td>
+            <form method="POST" action="{{ url_for('dept_delete', dept_id=dept.departmentID) }}">
+                <input class="btn btn-outline-danger" type="submit" value="Delete">
+            </form>
+        </td>
+                 
+    </tr>
+    {% endfor %}
+    {% endif %}
+      {% endif %}
+</table>
+{% endblock %}

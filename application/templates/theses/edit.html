@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<form method="POST" action="{{ url_for('thesis_modify', thesis_id=thesis.thesisID) }}">
+    <div class="form-group">
+
+        {{ form.username.label }}
+        {{ form.username }}
+
+    </div>
+    <div class="form-group">
+
+        {{ form.title.label }}
+        {{ form.title }}
+
+    </div>
+    <div class="form-group">
+
+        {{ form.description.label }}
+        {{ form.description }}
+
+    </div>
+    <div class="form-group">
+
+        {{ form.science.label }}
+        {{ form.science }}
+
+    </div>
+    <div class="form-group">
+
+        {% for subfield in form.level %}
+        
+            {{ subfield }}
+            {{ subfield.label }}
+        
+        {% endfor %}
+
+    </div>
+    <div class="form-group">
+
+        {{ form.author.label }}
+        {{ form.author }}
+
+    </div>
+    <div class="form-group">
+
+        {{ form.status.label }}
+        {{ form.status }}
+
+    </div>
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col">
+                {{ form.createdon.label }}
+                {{ form.createdon }}
+            </div>
+            <div class="col">
+                {{ form.modifiedon.label }}
+                {{ form.modifiedon }}
+            </div>
+        </div>
+    </div>  
+
+        <input class="btn btn-primary" type="submit" value="Save" />
+        <a class="btn btn-danger" href="{{url_for('theses_index')}}" role="button">Cancel</a>
+</form>
+{% endblock %}

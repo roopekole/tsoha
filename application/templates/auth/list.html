@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+
+{# Allow admin to manage users #}
+    {% if (current_user.admin) %}
+    <a class="btn btn-outline-primary" href=" {{ url_for('account_form') }} " role="button">Create</a><br /><br />
+    <table>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email address</th>            
+            <th>Department</th>
+            <th>Admin</th> 
+            <th>Created</th> 
+            <th>Last modified</th> 
+            <th colspan="2"></th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.userID }}</td>
+            <td>{{ user.user_department.name}}</td>  
+            <td>{% if user.admin == 1 %}&#10004;{% endif %}</td>
+            <td>{{ user.createdOn }}</td>
+            <td>{{ user.modifiedOn }}</td>
+            
+            
+
+            <td>
+                <form method="GET" action="{{ url_for('account_edit', account_id=user.userID) }}">
+                    <input class="btn btn-outline-primary" type="submit" value="Edit">
+
+
+                </form>
+            </td>    
+
+            
+            <td>
+                <form method="POST" action="{{url_for('user_delete', account_id=user.userID)}}">
+                    <input class="btn btn-outline-danger" type="submit" value="Delete">
+                </form>
+            </td>
+                
+            
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </table>
+    {% endblock %}

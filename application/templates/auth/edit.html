@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<form method="POST" action="{{url_for('account_update', account_id=user.userID)}}">
+    <div class="form-group">
+        
+        {{ form.username.label }}
+        {{ form.username }}
+
+    </div>
+    <div class="form-group">
+        
+        {{ form.firstname.label }}
+        {{ form.firstname }}
+    </div>
+    <div class="form-group">
+        {{ form.lastname.label }}
+        {{ form.lastname }}
+    </div>
+
+    <div class="form-group">
+        {{ form.departments.label }}
+        {{ form.departments }}
+    </div>
+
+    <div class="form-group">
+        {{ form.admin }}
+        {{ form.admin.label }}
+    </div>
+
+    <input class="btn btn-primary" type="submit" value="Submit" />
+    <a class="btn btn-danger" href="{{url_for('accounts_index')}}" role="button">Cancel</a>
+    </form>
+    {% endblock %}

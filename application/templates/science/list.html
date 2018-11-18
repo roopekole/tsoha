@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  
+{# Allow admin to manage sciences #}
+    {% if (current_user.admin) %}
+<a class="btn btn-outline-primary" href=" {{ url_for('sci_form') }} " role="button">Create</a><br /><br />
+
+
+<table>
+    <tr>
+        <th>Science</th>
+        <th>Created</th>
+        <th></th>
+    </tr>
+    {# a Show error if there are no sciences #}
+      {% if scis|length < 1 %}
+      <tr>
+          <td colspan="4">There are no sciences in the system - please create one</td>
+      </tr>
+    {% else %}
+    {% for sci in scis %}
+    <tr>
+        <td>{{ sci.name }}</td>
+        <td>{{ sci.createdOn }}</td>
+              
+
+        <td>
+            <form method="POST" action="{{ url_for('sci_delete', sci_id=sci.scienceID) }}">
+                <input class="btn btn-outline-danger" type="submit" value="Delete">
+            </form>
+        </td>
+                 
+    </tr>
+    {% endfor %}
+    {% endif %}
+      {% endif %}
+</table>
+{% endblock %}

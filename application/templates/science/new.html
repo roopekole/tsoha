@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+        <form method="POST" action="{{ url_for('sci_create') }}">
+          
+            <div class="form-group">
+                {{ form.name.label }}
+                {{ form.name }}
+
+            </div> 
+            <input class="btn btn-primary" type="submit" value="Submit" />
+            <a class="btn btn-danger" href="{{url_for('scis_index')}}" role="button">Cancel</a>
+</form>
+   
+        {% endblock %}
