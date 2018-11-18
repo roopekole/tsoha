@@ -87,9 +87,9 @@ def account_create():
     #if not form.validate():
        # return render_template("auth/new.html", form = form)
     if form.admin.data == False:
-        form.admin.data == False
+        form.admin.data = 0
     else:
-        form.admin.data == True
+        form.admin.data = 1
   
     t = User(form.username.data, form.firstname.data, form.lastname.data, form.password.data, form.departments.data, form.admin.data)
     
