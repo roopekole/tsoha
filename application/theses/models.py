@@ -1,24 +1,27 @@
 from application import db
+from application.models import Base, science2thesis
 
-class Thesis(db.Model):
-    ThesisID = db.Column(db.Integer, primary_key=True)
-    Title = db.Column(db.String(144), nullable=False)
-    Description = db.Column(db.String(144), nullable=False)
-    Level = db.Column(db.Boolean)
-    Author = db.Column(db.String(144), nullable=True)
-    Status = db.Column(db.Integer)
-    CreatedOn = db.Column(db.DateTime, default=db.func.current_timestamp())
-    CompletedOn = db.Column(db.DateTime, default=db.func.current_timestamp())
-    ReservedOn = db.Column(db.DateTime, default=db.func.current_timestamp(),
-    onupdate=db.func.current_timestamp())
+class Thesis(Base):
+    thesisID = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(144), nullable=False)
+    description = db.Column(db.String(144), nullable=False)
+    level = db.Column(db.Boolean)
+    author = db.Column(db.String(144), nullable=True)
+    status = db.Column(db.Integer)
+    completedOn = db.Column(db.DateTime, default=db.func.current_timestamp())
+    reservedOn = db.Column(db.DateTime, nullable = True)
 
-    UserID = db.Column(db.String, db.ForeignKey('account.UserID'),
+    userID = db.Column(db.String, db.ForeignKey('account.userID'),
                            nullable=False)
+    
 
-
+    #Relationships
+    science2thesis = db.relationship("Science", secondary = science2thesis,
+                               backref=db.backref('theses', lazy = 'joined'))
+    
 
     def __init__(self, title, description, user):
-        self.Title = title
-        self.Description = description
-        self.Status = 0
-        self.UserID = user
+        self.title = title
+        self.description = description
+        self.status = 0
+        self.userID = user
