@@ -63,7 +63,10 @@ def account_update(account_id):
     user.firstName = form.firstname.data
     user.lastName = form.lastname.data
     user.department = form.departments.data
-    user.admin = form.admin.data
+    if form.admin.data == False:
+        user.admin = 0
+    else:
+        user.admin = 1
 
     db.session.commit()
     return redirect(url_for("accounts_index"))
