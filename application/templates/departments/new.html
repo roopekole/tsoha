@@ -7,6 +7,9 @@
             <div class="form-group">
                 {{ form.name.label }}
                 {{ form.name }}
+                {% for error in form.name.errors %}
+                {{ error }}
+                {% endfor %}
 
             </div> 
             <input class="btn btn-primary" type="submit" value="Submit" />

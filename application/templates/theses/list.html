@@ -1,7 +1,42 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  
+ <form class="search" method="post">
+    <h3>Search</h3>
+     <hr />
+    <div class="col">
+        <div class="row">
+            {{ form.science.label }}
+        </div>
+        <div class="row">
+            {{ form.science }}
+        </div>
+        <br />
+        <div class="row">
+           {{ form.supervisor.label }}
+        </div>
+        <div class="row">
+            {{ form.supervisor }}
+        </div>
+        <br />
+        <div class="row">
+            {{ form.departments.label }}
+        </div>
+        <div class="row">
+            {{ form.departments }}
+        </div>
+        <br />
+        <div class="row">
+            {{ form.status.label }}
+        </div>
+        <div class="row">
+            {{ form.status }}
+        </div>
+    </div>
+     <hr />
+     <br />
+     <input class="btn btn-primary" type="submit" value="Search">
+</form> 
 {# Allow admin or the thesis topic author to edit the thesis #}
     {% if (current_user.is_authenticated) %}
 <a class="btn btn-outline-primary" href=" {{ url_for('theses_form') }} " role="button">Create</a><br /><br />
@@ -24,7 +59,8 @@
         <th>Status</th>
         <th>Created</th>
         <th>Reserved</th>
-        <th colspan="2"></th>
+        <th>Completed</th>
+        <th colspan="3"></th>
         
     </tr>
     {# a Show error if there are no theses #}
@@ -84,36 +120,60 @@
             </td>
             <td>{{ thesis.createdOn }}</td>
             <td>{{ thesis.reservedOn if thesis.reservedOn }}</td>
+            <td>{{ thesis.completedOn if thesis.completedOn }}</td>
+            
+            {# Current user actions are Edit / finalize based on the status #}
+            {% if current_user.userID == thesis.userID and not current_user.admin %}
+            <td colspan="3">
+                {% if thesis.status == 0%}
 
+                <form method="GET" action="{{ url_for('thesis_edit', thesis_id=thesis.thesisID) }}">
+                    <input class="btn btn-outline-primary" type="submit" value="Edit">
+                </form>
 
+                {% elif thesis.status == 1 %}
+                <form method="GET" action="{{ url_for('thesis_finalize', thesis_id=thesis.thesisID) }}">
+                    <input class="btn btn-outline-success" type="submit" value="Finalize">
+                </form>
+                {% endif %}
+            </td>
 
+            {# Admin actions are Edit / Delete / Finalize #}
+            {# Delete is displayed just for the showcase even if status does not permit deleting #}
+            {% elif current_user.admin %}
+            <td>
+                <form method="GET" action="{{ url_for('thesis_edit', thesis_id=thesis.thesisID) }}">
+                    <input class="btn btn-outline-primary btn-sm" type="submit" value="Edit">
+                </form>
+            </td>
+            <td>
+                {% if thesis.status != 0 %}
+                <a tabindex="0" class="btn btn-outline-danger btn-sm" role="button" data-toggle="popover" data-trigger="focus" data-content="Thesis status does not allow deletion"><s>Delete</s></a>
+                {% else %}
+                <form method="POST" action="{{ url_for('thesis_delete', thesis_id=thesis.thesisID) }}">
+                    <input class="btn btn-outline-danger btn-sm" type="submit" value="Delete">
+                </form>
+                {% endif %}
+            </td>
+            <td>
+                {% if thesis.status == 1 %}
 
-            {# Allow admin or the thesis topic author to edit the thesis #}
-        <td>
-            {% if ((current_user.admin) or (current_user.userID == thesis.userID)) %}
+                <form method="GET" action="{{ url_for('thesis_finalize', thesis_id=thesis.thesisID) }}">
+                    <input class="btn btn-outline-success btn-sm" type="submit" value="Finalize">
+                </form>
 
-
-            <form method="GET" action="{{ url_for('thesis_edit', thesis_id=thesis.thesisID) }}">
-                <input class="btn btn-outline-primary" type="submit" value="Edit">
-
-
-            </form>
-
-            {# Allow admin to delete the thesis #}
-        </td>
-        <td>
-            {% endif %}
-            {% if (current_user.admin) %}
-
-            {% if thesis.status != 0 %}
-            <a tabindex="0" class="btn btn-outline-danger" role="button" data-toggle="popover" data-trigger="focus" data-content="Thesis status does not allow deletion">Delete</a>
+                {% endif %}
+            </td>
             {% else %}
-            <form method="POST" action="{{ url_for('thesis_delete', thesis_id=thesis.thesisID) }}">
-                <input class="btn btn-outline-danger" type="submit" value="Delete">
-            </form>
-            {% endif %}
-            {% endif %}
-        </td>
+        <td colspan="3"></td>
+        {% endif %}
+
+
+
+
+
+
+
 
 </tr>
     {% endfor %}

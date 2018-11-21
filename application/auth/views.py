@@ -6,6 +6,7 @@ from application.auth.models import User
 from application.auth.forms import LoginForm, AccountForm, NewAccountForm
 
 from application.departments.models import Dept
+from application.theses.models import Thesis
 
 @app.route("/auth/login", methods = ["GET", "POST"])
 def auth_login():
@@ -32,7 +33,10 @@ def auth_logout():
 
 @app.route("/account", methods=["GET"])
 def accounts_index():
-    return render_template("auth/list.html", users = User.query.outerjoin(Dept, User.department == Dept.departmentID).all())
+    users =  User.query.outerjoin(Dept, User.department == Dept.departmentID).all()
+    theses_users = Thesis.query.distinct(Thesis.userID)
+    theses_users = [user.userID for user in theses_users]
+    return render_template("auth/list.html", theses_users = theses_users, users = users)
 
 @app.route("/account/new/")
 @login_required(role="ADMIN")
@@ -46,11 +50,12 @@ def account_form():
 def account_edit(account_id):
     
     user = User.query.get(account_id)
- 
+    
     departments = Dept.query.all()
     
     form = AccountForm(username = user.userID, firstname = user.firstName, lastname = user.lastName,
-                       admin = user.admin, departments = user.department)
+                       admin = user.admin, 
+                       departments = user.department)
     form.departments.choices = [(department.departmentID, department.name) for department in departments]
         
     return render_template("auth/edit.html", user = user, form = form)
@@ -60,6 +65,14 @@ def account_update(account_id):
    
     user = User.query.get(account_id)
     form = AccountForm(request.form)
+
+    departments = Dept.query.all()
+    form.departments.choices = [(department.departmentID, department.name) for department in departments]
+    # This is needed to validate the form correctly
+    value = dict(form.departments.choices).get(form.departments.data)
+
+    if not form.validate():
+        return render_template("auth/edit.html", user = user, form = form)
     user.firstName = form.firstname.data
     user.lastName = form.lastname.data
     user.department = form.departments.data
@@ -87,8 +100,19 @@ def user_delete(account_id):
 def account_create():
     form = NewAccountForm(request.form)
   
-    #if not form.validate():
-       # return render_template("auth/new.html", form = form)
+    departments = Dept.query.all()
+    form.departments.choices = [(department.departmentID, department.name) for department in departments]
+    # This is needed to validate the form correctly
+    value = dict(form.departments.choices).get(form.departments.data)
+   
+     # Check if user is in the list of existing user and prevent creation
+    users =  User.query.all()
+    existing_usersIDs = [user.userID for user in users]
+    if form.username.data in existing_usersIDs:
+        return render_template("auth/new.html", form = form, id_error = "User already exists")
+
+    if not form.validate():
+        return render_template("auth/new.html", form = form)
     if form.admin.data == False:
         form.admin.data = 0
     else:

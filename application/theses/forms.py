@@ -6,7 +6,7 @@ class ThesisForm(FlaskForm):
     title = StringField("Thesis working title", [validators.Length(min=2, max=500)],  render_kw={"class": "form-control"})
     description = TextAreaField("Description", [validators.Length(min=5, max=500)],  render_kw={"class": "form-control"})
     # List passed from route
-    science = SelectMultipleField('Science(s)',validators=[validators.optional()],  render_kw={"multiple class": "form-control"})
+    science = SelectMultipleField('Science(s)',coerce=int,  render_kw={"class": "chosen-select"})
  
     class Meta:
         csrf = False
@@ -16,13 +16,29 @@ class ThesisEditForm(FlaskForm):
     title = StringField("Thesis working title", [validators.Length(min=2, max=144)],  render_kw={"class": "form-control"})
     description = TextAreaField("Description", [validators.Length(min=5, max=500)],  render_kw={"class": "form-control"})
     # List passed from route
-    science = SelectMultipleField('Science(s)',validators=[validators.optional()],  render_kw={"multiple class": "form-control"})
-    level = RadioField('Level', choices=[(False, 'Bachelor'), (True, 'Master')],  render_kw={" class": "form-check-input"})
-
-    # Todo: validation between author and status, if author selected -> status cannot be available
-    author = StringField("Author", [validators.Length(min=2, max=144)],  render_kw={"class": "form-control"})
-    status = SelectField("Status", choices=[(0, 'Available'), (1, 'In progress'),(2, 'Completed')], render_kw={"class": "form-control"} )
+    science = SelectMultipleField('Science(s)',coerce=int,  render_kw={"class": "chosen-select"})
     createdon = DateTimeField("Created on", render_kw={"readonly class": "form-control"})
     modifiedon = DateTimeField("Modified on", render_kw={"readonly class": "form-control"})
     class Meta:
         csrf = False
+
+class ThesisCheckoutForm(FlaskForm):
+    username = StringField("Supervisor", render_kw={"readonly class": "form-control"})
+    title = StringField("Thesis working title", [validators.Length(min=2, max=144)],  render_kw={"readonly class": "form-control"})
+    description = TextAreaField("Description", [validators.Length(min=5, max=500)],  render_kw={"readonly class": "form-control"})
+    # List passed from route
+    science = SelectMultipleField('Science(s)',coerce=int,  render_kw={"readonly class": "chosen-select"})
+    level = RadioField('Level', choices=[(False, 'Bachelor'), (True, 'Master')], coerce=bool, render_kw={" class": "form-check-input"})
+
+    # Todo: validation between author and status, if author selected -> status cannot be available
+    author = StringField("Author", [validators.Length(min=2, max=144)],  render_kw={"class": "form-control"})
+    createdon = DateTimeField("Created on", render_kw={"readonly class": "form-control"})
+    modifiedon = DateTimeField("Modified on", render_kw={"readonly class": "form-control"})
+    class Meta:
+        csrf = False
+
+class ThesisSearch(FlaskForm):
+    science = SelectMultipleField('Science:',coerce=int,  render_kw={"class": "chosen-select", "data-placeholder":"Choose a science..."})
+    departments = SelectMultipleField('Department:', coerce=int,  render_kw={"class": "chosen-select", "data-placeholder":"Choose a department..."})
+    supervisor = SelectMultipleField('Supervisor:', coerce=str,  render_kw={"class": "chosen-select", "data-placeholder":"Choose a supervisor..."})
+    status = SelectMultipleField('Status:', coerce=int,  render_kw={"class": "chosen-select", "data-placeholder":"Choose a status..."})

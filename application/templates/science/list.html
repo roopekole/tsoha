@@ -24,11 +24,16 @@
         <td>{{ sci.name }}</td>
         <td>{{ sci.createdOn }}</td>
               
-
         <td>
+            {% if sci.science2thesis|length > 0 %}
+            <a tabindex="0" class="btn btn-outline-danger" role="button" data-toggle="popover" data-trigger="focus" data-content="Science is associated with {{sci.science2thesis|length}} theses and cannot be deleted">
+                <s>Delete</s>
+            </a>
+            {% else %}
             <form method="POST" action="{{ url_for('sci_delete', sci_id=sci.scienceID) }}">
                 <input class="btn btn-outline-danger" type="submit" value="Delete">
             </form>
+            {% endif %}
         </td>
                  
     </tr>

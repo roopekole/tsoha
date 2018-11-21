@@ -39,9 +39,15 @@
 
             
             <td>
+                {% if user.userID in theses_users %}
+                <a tabindex="0" class="btn btn-outline-danger" role="button" data-toggle="popover" data-trigger="focus" data-content="User is supervisor to theses and cannot be deleted">
+                    <s>Delete</s></a>
+                {% else %}
                 <form method="POST" action="{{url_for('user_delete', account_id=user.userID)}}">
                     <input class="btn btn-outline-danger" type="submit" value="Delete">
                 </form>
+                {% endif %}
+                
             </td>
                 
             

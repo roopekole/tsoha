@@ -32,7 +32,7 @@ def dept_create():
     form = DeptForm(request.form)
   
     if not form.validate():
-        return render_template("department/new.html", form = form)
+        return render_template("departments/new.html", form = form)
 
   
     t = Dept(form.name.data)

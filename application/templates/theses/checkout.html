@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('thesis_modify', thesis_id=thesis.thesisID) }}">
+<form method="POST" action="{{ url_for('thesis_checkout', thesis_id=thesis.thesisID) }}">
     <div class="form-group">
 
         {{ form.username.label }}
@@ -28,22 +28,35 @@
     </div>
     <div class="form-group">
 
-        {{ form.science.label }}<br/>
+        {{ form.science.label }}
         {{ form.science }}
         {% for error in form.science.errors %}
         {{ error }}
         {% endfor %}
 
     </div>
-    
+    <hr>
+    <p>Please enter the name of the author and the level of the thesis</p>
+    <p>Saving will set the thesis status to "In progress" and lock the information</p>
+    <div class="form-group">
 
-        <input class="btn btn-primary" name="action" type="submit" value="Save" />
-        <a class="btn btn-danger" href="{{url_for('theses_index')}}" role="button">Cancel</a>
-        <input class="btn btn-success" name="action" type="submit" value="Checkout for a student (and save)" />
-       
-    <br />
-    <br />
+        {{ form.author.label }}
+        {{ form.author }}
+        {% for error in form.author.errors %}
+        {{ error }}
+        {% endfor %}
 
+    </div>
+    <div class="form-group">
+
+        {% for subfield in form.level %}
+        
+        {{ subfield }}
+        {{ subfield.label }}
+        
+        {% endfor %}
+
+    </div>
     <div class="form-group">
         <div class="form-row">
             <div class="col">
@@ -55,6 +68,12 @@
                 {{ form.modifiedon }}
             </div>
         </div>
-    </div>  
+    </div>
+
+    <input class="btn btn-primary" name="action" type="submit" value="Save" />
+    <a class="btn btn-danger" href="{{url_for('theses_index')}}" role="button">Cancel</a>
+    {% if thesis.status == 1 %}
+    <input class="btn btn-warning" name="action" type="submit" value="Clear student checkout" />
+    {% endif %}
 </form>
 {% endblock %}
