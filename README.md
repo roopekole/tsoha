@@ -2,7 +2,13 @@
 Tietokantasovellus, harjoitustyö
 
 Sovellus osoitteessa: https://morning-garden-53294.herokuapp.com/ 
-(toimii tunnuksilla test@gmail.com / test)
+Login:
+- Admin: admin@gmail.com / test
+- Supervisor: test@gmail.com / test
+
+Tiedetyt bugit:
+- Search: ei vielä implementoitu
+- Thesis taso ei päivity
 
 (Inspiraation lähde: http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Graduaiheet.html)
 
