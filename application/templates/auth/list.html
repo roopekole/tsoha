@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
+<div class="container">
 
 {# Allow admin to manage users #}
     {% if (current_user.admin) %}
@@ -55,4 +55,5 @@
         {% endfor %}
         {% endif %}
     </table>
+</div>
     {% endblock %}

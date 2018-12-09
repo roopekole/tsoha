@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<div class="container">
 <form method="POST" action="{{ url_for('thesis_checkout', thesis_id=thesis.thesisID) }}">
     <div class="form-group">
 
@@ -53,7 +54,10 @@
         
         {{ subfield }}
         {{ subfield.label }}
-        
+        {% endfor %}
+        {% for error in form.level.errors %}
+        <br>
+        {{ error }}
         {% endfor %}
 
     </div>
@@ -76,4 +80,5 @@
     <input class="btn btn-warning" name="action" type="submit" value="Clear student checkout" />
     {% endif %}
 </form>
+</div>
 {% endblock %}

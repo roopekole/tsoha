@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<div class="container">
 <form method="POST" action="{{url_for('account_update', account_id=user.userID)}}">
     <div class="form-group">
         
@@ -40,4 +41,5 @@
     <input class="btn btn-primary" type="submit" value="Submit" />
     <a class="btn btn-danger" href="{{url_for('accounts_index')}}" role="button">Cancel</a>
     </form>
+</div>
     {% endblock %}

@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<div class="container">
 <form method="POST" action="{{ url_for('thesis_modify', thesis_id=thesis.thesisID) }}">
     <div class="form-group">
 
@@ -57,4 +58,5 @@
         </div>
     </div>  
 </form>
+</div>
 {% endblock %}

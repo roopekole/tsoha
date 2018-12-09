@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
+<div class="container">
         <form method="POST" action="{{ url_for('theses_create') }}">
             <div class="form-group">
                 {{form.username.label}}
@@ -36,5 +36,5 @@
             <input class="btn btn-primary" type="submit" value="Submit" />
             <a class="btn btn-danger" href="{{url_for('theses_index')}}" role="button">Cancel</a>
 </form>
-   
+</div>   
         {% endblock %}
