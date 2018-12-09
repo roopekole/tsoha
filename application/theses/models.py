@@ -8,7 +8,7 @@ class Thesis(Base):
     level = db.Column(db.Boolean)
     author = db.Column(db.String(144), nullable=True)
     status = db.Column(db.Integer)
-    completedOn = db.Column(db.DateTime, default=db.func.current_timestamp())
+    completedOn = db.Column(db.DateTime)
     reservedOn = db.Column(db.DateTime, nullable = True)
 
     userID = db.Column(db.String, db.ForeignKey('account.userID'),
