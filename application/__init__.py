@@ -1,8 +1,8 @@
-# Tuodaan Flask käyttöön
-from flask import Flask
+# Import flask and flask-session
+from flask import Flask, session
 app = Flask(__name__)
 
-# Tuodaan SQLAlchemy käyttöön
+# Import SQL Alchemy
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -13,9 +13,11 @@ else:
     app.config["SQLALCHEMY_ECHO"] = True
 
 
-# Luodaan db-olio, jota käytetään tietokannan käsittelyyn
+# Create DB object
 db = SQLAlchemy(app)
 
+# Create session secret key
+app.secret_key = os.urandom(24)
 
 
 # login
