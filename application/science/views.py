@@ -12,6 +12,7 @@ def scis_index():
 
 # Delete science
 @app.route("/science/delete/<sci_id>/", methods=["POST"])
+@login_required(role="ADMIN")
 def sci_delete(sci_id):
    
     d = Science.query.get(sci_id)
