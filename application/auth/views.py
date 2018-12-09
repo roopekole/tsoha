@@ -1,6 +1,6 @@
-from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user
-
+from flask import render_template, request, redirect, url_for, session
+from flask_login import login_user, logout_user, current_user
+from passlib.hash import sha256_crypt
 from application import app, db, login_required
 from application.auth.models import User
 from application.auth.forms import LoginForm, AccountForm, NewAccountForm
@@ -11,18 +11,28 @@ from application.theses.models import Thesis
 @app.route("/auth/login", methods = ["GET", "POST"])
 def auth_login():
     if request.method == "GET":
+        # Set the previous page into memory
+        session['url'] = request.referrer
         return render_template("auth/loginform.html", form = LoginForm())
 
     form = LoginForm(request.form)
     
 
-    user = User.query.filter_by(userID=form.username.data, password=form.password.data).first()
+    user = User.query.filter_by(userID=form.username.data).first()
+    # Return with error if no user
     if not user:
         return render_template("auth/loginform.html", form = form,
                                 error = "No such username or password")
-
-
+    # Also return if no password match
+    if not(sha256_crypt.verify(form.password.data, user.password)):
+        return render_template("auth/loginform.html", form = form,
+                                error = "No such username or password")
+    
     login_user(user)
+    # get the previous page from memory
+    if 'url' in session:
+        return redirect(session['url'])
+         
     return redirect(url_for("index"))    
 
 @app.route("/auth/logout")
@@ -41,14 +51,18 @@ def accounts_index():
 @app.route("/account/new/")
 @login_required(role="ADMIN")
 def account_form():
+    if not current_user.admin:
+        return "Access denied"
     departments = Dept.query.all()
     form = NewAccountForm()
     form.departments.choices = [(department.departmentID, department.name) for department in departments]
     return render_template("auth/new.html", form = form)
 
 @app.route("/account/<account_id>/", methods=["GET"])
+@login_required(role="ADMIN")
 def account_edit(account_id):
-    
+    if not current_user.admin:
+        return "Access denied"
     user = User.query.get(account_id)
     
     departments = Dept.query.all()
@@ -62,7 +76,8 @@ def account_edit(account_id):
 
 @app.route("/account/edit/<account_id>/", methods=["POST"])
 def account_update(account_id):
-   
+    if not current_user.admin:
+        return "Access denied"
     user = User.query.get(account_id)
     form = AccountForm(request.form)
 
@@ -87,7 +102,8 @@ def account_update(account_id):
 
 @app.route("/account/delete/<account_id>/", methods=["POST"])
 def user_delete(account_id):
-   
+    if not current_user.admin:
+        return "Access denied"
     u = User.query.get(account_id)
     
     db.session().delete(u)
@@ -118,10 +134,11 @@ def account_create():
     else:
         form.admin.data = 1
   
-    t = User(form.username.data, form.firstname.data, form.lastname.data, form.password.data, form.departments.data, form.admin.data)
+    
+    u = User(form.username.data, form.firstname.data, form.lastname.data, sha256_crypt.hash(form.password.data), form.departments.data, form.admin.data)
     
   
-    db.session().add(t)
+    db.session().add(u)
     db.session().commit()
   
     return redirect(url_for("accounts_index"))
