@@ -2,7 +2,9 @@
 
 Please read Readme to learn about the application overview
 
-1. Thesis writer use cases
+## Use case list
+
+1. Thesis writer (i.e. student / author) use cases
 
 	1.1. Listing theses
 	- (All) users may search and view theses by 
@@ -29,21 +31,81 @@ Please read Readme to learn about the application overview
 	- Access the self-created theses for editing
 	    * Fill level (MSc. / BSc. thesis)
 		* Fill author information
-	2.4. Administering the thesis status
-	- Access the self-created theses for editing	
-		* Changing the status of the thesis proposal (available / in progress / completed)
+	2.4. Finalizing the thesis
+	- Changing the status of the thesis to be completed	
 
 3. Administrator use cases
 	
 	3.1. Authentication to the system
 	- Execution of actions which require authentication and administrator level authorization
-	3.2. Administering the theses (MVP scope to be determined)
-	- User may edit any theses
-	3.3. Administering the master data (MVP scope to be determined)
+	3.2. Administering the theses
+	- User may edit any theses at any time
+	- User may delete theses which are in available state
+	- User may change the status of any theses at any time
+	- User may create theses
+	3.3. Administering the master data
 	- Add/edit/delete users 
 	    * Add users
 		* Change user details
 		* Elevate user permissions
-		* Delete irrelevant users (admin / supervisor)
-	- Manage departments (add, edit, delete)
-	- Manage scientific areas (e.g. Greek Philosophy, Economics, Microeconomics, Mathematics, Econometrics...) (add/edit/delete)
+		* Delete irrelevant users
+	- Manage departments (add, delete)
+	- Manage scientific areas (e.g. Greek Philosophy, Economics, Microeconomics, Mathematics, Econometrics...) (add, delete)
+
+## SQL queries related to the main use cases
+1.1 Listing and searching theses
+- Listing and ordering alphabetically by thesis title
+
+```sql
+SELECT * FROM thesis ORDER BY LOWER(title) asc
+```
+
+- Searching by foreign key assiociation (e.g. status)
+
+```sql
+SELECT * FROM thesis LEFT JOIN account
+ON thesis.userID = account.userID
+where account.userID = ? 
+```
+
+2.2 Entering new theses into system
+- Inserting a new thesis
+
+```sql
+INSERT INTO thesis ("createdOn", "modifiedOn", title, description, level, author, status, "completedOn", "reservedOn", "userID") VALUES (CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?)
+```
+
+- Updating / Adding a science associations
+```sql
+INSERT INTO science2thesis ("thesisID", "scienceID") VALUES (?, ?)
+```
+
+2.3 Reserving thesis for a student
+
+```sql
+UPDATE thesis SET "modifiedOn"=CURRENT_TIMESTAMP, level=?, author=?, status=?, "reservedOn"=? WHERE thesis."thesisID" = ?
+```
+
+2.4 Finalizing the thesis
+```sql
+UPDATE thesis SET "modifiedOn"=CURRENT_TIMESTAMP, status=?, "completedOn"=? WHERE thesis."thesisID" = ?
+```
+
+3.3 Administering the master data (Users)
+- Select user to be edited
+
+```sql
+SELECT account."createdOn" AS "account_createdOn", account."modifiedOn" AS "account_modifiedOn", account."userID" AS "account_userID", account."firstName" AS "account_firstName", account."lastName" AS "account_lastName", account.password AS account_password, account.admin AS account_admin, account.department AS account_department
+FROM account
+WHERE account."userID" = ?
+```
+
+- Edit the user (e.g. change admin rights)
+```sql
+UPDATE account SET "modifiedOn"=CURRENT_TIMESTAMP, admin=? WHERE account."userID" = ?
+```
+
+- Removing a user
+```sql
+DELETE FROM account WHERE account."userID" = ?
+```
