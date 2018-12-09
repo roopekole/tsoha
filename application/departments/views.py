@@ -12,6 +12,7 @@ def depts_index():
 
 # Delete department
 @app.route("/deparment/delete/<dept_id>/", methods=["POST"])
+@login_required(role="ADMIN")
 def dept_delete(dept_id):
    
     d = Dept.query.get(dept_id)
