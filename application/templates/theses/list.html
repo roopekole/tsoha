@@ -55,8 +55,12 @@
         </div>  
         <div class="col"></div>
         <div class="col"></div>
-            <div class="col-md-auto">    
-                 <span class="slide" style="font-size:30px;cursor:pointer" onclick="openNav()">search &#9776;</span>
+            <div class="col-md-auto"> 
+                {% if search_applied %}
+                <span class="slide" style="font-size:30px;cursor:pointer;" onclick="openNav()">search <img height="25px" width="25px" src="{{url_for('static', filename='reload.svg')}}"></span>
+                {% else %}
+                 <span class="slide" style="font-size:30px;cursor:pointer" onclick="openNav()">search <img height="25px" width="25px" src="{{url_for('static', filename='magnifying-glass.svg')}}"></span>
+                 {% endif %} 
     </div>
     </div>
     <div class="row"><br /></div>

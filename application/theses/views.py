@@ -41,7 +41,6 @@ def theses_index():
     # Add choices for statuses, hardcoded
     form.status.choices = [(0,"Available"),(1,"Progressing"),(2,"Completed")]
 
-    search = False
     #If search has been applied with criteria. If no criteria show all
     if request.method == 'POST' and request.form['action'] == 'Search' and len(search_values.departments.data+search_values.science.data+search_values.supervisor.data+search_values.status.data)>0:
         
@@ -54,9 +53,11 @@ def theses_index():
         theses_by_department = Thesis.query.join(User).filter(User.department.in_(search_values.departments.data)).all()
         # Merge results to single list, remove duplicates ,sort alphabetically by Thesis.title
         theses = sorted(list(set(theses_by_status_user + theses_by_department + thesis_by_science)), key=lambda t: t.title.lower())
+        search_applied = 1
     else:
         # Fetch all theses, sort alphabetically by Thesis.title
         theses = Thesis.query.order_by(func.lower(Thesis.title)).all()
+        search_applied = 0
     
     #Pagination
     def get_theses(offset=0, per_page=10):
@@ -77,7 +78,7 @@ def theses_index():
     form.supervisor.choices = [(user.userID, user.firstName + " " + user.lastName) for user in user_details]
         
     
-    return render_template("theses/list.html", form = form, theses = paginated_theses, statuses = statuses, depts = depts, page=page, per_page = per_page, pagination = pagination)
+    return render_template("theses/list.html", search_applied = search_applied, form = form, theses = paginated_theses, statuses = statuses, depts = depts, page=page, per_page = per_page, pagination = pagination)
 
 
 @app.route("/theses/new/")
