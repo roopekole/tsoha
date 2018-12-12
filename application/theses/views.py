@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from flask_paginate import Pagination, get_page_args
 from sqlalchemy import func
 from application.theses.models import Thesis
-from application.theses.forms import ThesisForm, ThesisEditForm, ThesisCheckoutForm, ThesisSearch
+from application.theses.forms import ThesisForm, ThesisEditForm, ThesisCheckoutForm, ThesisSearch, ThesisViewForm
 from application.science.models import Science
 from application.auth.models import User
 from application.departments.models import Dept
@@ -77,6 +77,24 @@ def theses_index():
     
     return render_template("theses/list.html", search_applied = search_applied, form = form, theses = paginated_theses, statuses = statuses, depts = depts, page=page, per_page = per_page, pagination = pagination)
 
+@app.route("/theses/view/<thesis_id>")
+def thesis_view(thesis_id):
+    thesis = Thesis.query.get(thesis_id)
+    
+    # Get the thesis details pre-filled for editing / viewing
+    form = ThesisViewForm(obj=thesis, username = thesis.userID, createdon = thesis.createdOn, modifiedon = thesis.modifiedOn)
+    
+    #Fetch available sciences
+    sciences = Science.query.all()
+    form.science.choices = [(science.scienceID, science.name) for science in sciences]
+
+    #Fetch selected sciences
+    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == thesis.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
+    form.science.process_data([(sci.scienceID)  for sci in thesis_scis])
+
+    form.status = thesis.status
+
+    return render_template("theses/view.html", form = form)
 
 @app.route("/theses/new/")
 @login_required

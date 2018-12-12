@@ -11,6 +11,18 @@ class ThesisForm(FlaskForm):
     class Meta:
         csrf = False
 
+class ThesisViewForm(FlaskForm):
+    username = StringField("Supervisor", render_kw={"readonly class": "form-control"})
+    title = StringField("Thesis working title",  render_kw={"readonly class": "form-control"})
+    description = TextAreaField("Description",  render_kw={"readonly class": "form-control"})
+    science = SelectMultipleField('Science(s)',coerce=int,  render_kw={"readonly class": "chosen-select"})
+    level = RadioField('Level', choices=[(0, 'Bachelor'), (1, 'Master')], coerce=int, render_kw={"class": "form-check-input"})
+    status = StringField('Status', render_kw={"readonly class": "form-control"} )
+    createdon = DateTimeField("Created on", render_kw={"readonly class": "form-control"})
+    modifiedon = DateTimeField("Modified on", render_kw={"readonly class": "form-control"})
+    class Meta:
+        csrf = False
+
 class ThesisEditForm(FlaskForm):
     username = StringField("Supervisor", render_kw={"readonly class": "form-control"})
     title = StringField("Thesis working title", [validators.Length(min=2, max=144)],  render_kw={"class": "form-control"})

@@ -90,7 +90,7 @@
                     </tr>
                     {% else %}
                     {% for thesis in theses %}
-                    <tr class="item">
+                    <tr id="{{thesis.thesisID}}" class="item">
                         <td><b>{{ thesis.title }}</b><br />
                             <button type="button" class="btn btn-outline-secondary" title="{{ thesis.title }}"
                                 data-trigger="focus" data-container="body" data-toggle="popover" data-placement="right"
