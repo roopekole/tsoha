@@ -31,12 +31,9 @@ def theses_index():
     sciences = Science.query.all()
     form.science.choices = [(science.scienceID, science.name) for science in sciences]
 
-
     # Add choices for departments
     depts = Dept.query.all()
     form.departments.choices = [(department.departmentID, department.name) for department in depts]
-
-
     
     # Add choices for statuses, hardcoded
     form.status.choices = [(0,"Available"),(1,"Progressing"),(2,"Completed")]
@@ -97,12 +94,12 @@ def theses_form():
 @login_required
 def thesis_finalize(thesis_id):
 
-    t = Thesis.query.get(thesis_id)
+    thesis = Thesis.query.get(thesis_id)
     # Allow finalizing thesis only if user is admin or the supervisor of the thesis and the thesis is in progress
-    if not ((t.userID == current_user.userID  or current_user.admin) and t.status == 1):
+    if not ((thesis.userID == current_user.userID  or current_user.admin) and thesis.status == 1):
         return "Access denied"
-    t.status = 2
-    t.completedOn = datetime.datetime.now()
+    thesis.status = 2
+    thesis.completedOn = datetime.datetime.now()
     db.session().commit()
 
     return redirect(url_for("theses_index"))
@@ -111,16 +108,16 @@ def thesis_finalize(thesis_id):
 @login_required
 def thesis_clear_checkout(thesis_id):
 
-    t = Thesis.query.get(thesis_id)
+    thesis = Thesis.query.get(thesis_id)
     # Allow clearing student checkout only if user is admin and the thesis is available
-    if not (current_user.admin and t.status == 1):
+    if not (current_user.admin and thesis.status == 1):
         return "Access denied"
 
-    t.status = 0
-    t.level = None
-    t.completedOn = None
-    t.author = None
-    t.reservedOn = None
+    thesis.status = 0
+    thesis.level = None
+    thesis.completedOn = None
+    thesis.author = None
+    thesis.reservedOn = None
     db.session().commit()
 
     return redirect(url_for("theses_index"))
@@ -130,35 +127,35 @@ def thesis_clear_checkout(thesis_id):
 @login_required
 def thesis_edit(thesis_id):
    
-    t = Thesis.query.get(thesis_id)
+    thesis = Thesis.query.get(thesis_id)
     
     # Allow accessing thesis editor only if user is admin or the supervisor of the thesis and the thesis is available
-    if not ((t.userID == current_user.userID and t.status == 0) or current_user.admin):
+    if not ((thesis.userID == current_user.userID and thesis.status == 0) or current_user.admin):
         
         return "Access denied"
     
     # Get the thesis details pre-filled for editing / viewing
-    form = ThesisEditForm(obj=t, username = t.userID, createdon = t.createdOn, modifiedon = t.modifiedOn)
+    form = ThesisEditForm(obj=thesis, username = thesis.userID, createdon = thesis.createdOn, modifiedon = thesis.modifiedOn)
     
     #Fetch available sciences
     sciences = Science.query.all()
     form.science.choices = [(science.scienceID, science.name) for science in sciences]
 
     #Fetch selected sciences
-    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == t.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
+    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == thesis.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
     form.science.process_data([(sci.scienceID)  for sci in thesis_scis])
     
-    return render_template("theses/edit.html", thesis = t, form = form)
+    return render_template("theses/edit.html", thesis = thesis, form = form)
 
 @app.route("/theses/modify/<thesis_id>/", methods=["POST"])
 @login_required
 def thesis_modify(thesis_id):
    
    
-    t = Thesis.query.get(thesis_id)
+    thesis = Thesis.query.get(thesis_id)
     
     # Allow accessing thesis editor only if user is admin or the supervisor of the thesis and the thesis is available
-    if not ((t.userID == current_user.userID and t.status == 0) or current_user.admin):
+    if not ((thesis.userID == current_user.userID and thesis.status == 0) or current_user.admin):
        
         return "Access denied"
     form = ThesisEditForm(request.form)
@@ -168,75 +165,75 @@ def thesis_modify(thesis_id):
 
     if not form.validate():
         print(form.errors)
-        return render_template("theses/edit.html", thesis = t, form = form)
+        return render_template("theses/edit.html", thesis = thesis, form = form)
 
-    t.title = form.title.data
-    t.description = form.description.data
+    thesis.title = form.title.data
+    thesis.description = form.description.data
         
     # Fetch the form science id's and the current science associations
     # Remove existing associations which are not selected
     # Add the new associations from the form
-    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == t.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
+    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == thesis.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
     science_ids = form.science.data 
     
     for id in science_ids:
-        s = Science.query.get(id)
+        sci = Science.query.get(id)
         # this will add new non existing associations
-        if not(s in thesis_scis):
-            t.sciences.append(s)
+        if not(sci in thesis_scis):
+            thesis.sciences.append(sci)
             db.session().commit()
-        if s in thesis_scis:
-            thesis_scis.remove(s)
+        if sci in thesis_scis:
+            thesis_scis.remove(sci)
     
            
     removable_scis = thesis_scis
          
  
     for removable_sci in removable_scis:
-        s = Science.query.get(removable_sci.scienceID)
-        t.sciences.remove(s)
+        sci = Science.query.get(removable_sci.scienceID)
+        thesis.sciences.remove(sci)
 
     db.session().commit()        
 
     if request.form['action'] == 'Save':
         return redirect(url_for("theses_index"))
     elif request.form['action'] == 'Checkout for a student (and save)':
-        return redirect(url_for("thesis_checkout_get", thesis_id=t.thesisID))
+        return redirect(url_for("thesis_checkout_get", thesis_id=thesis.thesisID))
 
 @app.route("/theses/checkout/<thesis_id>/", methods=["GET"])
 @login_required
 def thesis_checkout_get(thesis_id):
    
-    t = Thesis.query.get(thesis_id)
+    thesis = Thesis.query.get(thesis_id)
    
     # Allow accessing thesis checkout editor only if user is admin or the supervisor of the thesis and the thesis is available
-    if not ((t.userID == current_user.userID and t.status == 0) or current_user.admin):
+    if not ((thesis.userID == current_user.userID and thesis.status == 0) or current_user.admin):
         
         return "Access denied"
     
     # Get the thesis details pre-filled for editing / viewing
-    form = ThesisCheckoutForm(obj=t, username = t.userID, createdon = t.createdOn, modifiedon = t.modifiedOn)
+    form = ThesisCheckoutForm(obj=thesis, username = thesis.userID, createdon = thesis.createdOn, modifiedon = thesis.modifiedOn)
     
     #Fetch available sciences
     sciences = Science.query.all()
     form.science.choices = [(science.scienceID, science.name) for science in sciences]
 
     #Fetch selected sciences
-    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == t.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
+    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == thesis.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
     form.science.process_data([(sci.scienceID)  for sci in thesis_scis])
 
     
-    return render_template("theses/checkout.html", thesis = t, form = form)
+    return render_template("theses/checkout.html", thesis = thesis, form = form)
 
 @app.route("/theses/checkout/<thesis_id>/", methods=["POST"])
 @login_required
 def thesis_checkout(thesis_id):
    
    
-    t = Thesis.query.get(thesis_id)
+    thesis = Thesis.query.get(thesis_id)
     
     # Allow accessing thesis editor only if user is admin or the supervisor of the thesis and the thesis is available
-    if not ((t.userID == current_user.userID and t.status == 0) or current_user.admin):
+    if not ((thesis.userID == current_user.userID and thesis.status == 0) or current_user.admin):
        
         return "Access denied"
 
@@ -250,17 +247,15 @@ def thesis_checkout(thesis_id):
         form.level.choices = [(False, "Bachelor"), (True, "Master")]
 
         if not form.validate():
-            return render_template("theses/checkout.html", thesis = t, form = form)
+            return render_template("theses/checkout.html", thesis = thesis, form = form)
 
     
-        t.level = form.level.data
-        print("###################")
-        print(t.level)
+        thesis.level = form.level.data
 
-        t.author = form.author.data
-        t.status = 1
-        t.reservedOn = datetime.datetime.now()
-        t.completedOn = None
+        thesis.author = form.author.data
+        thesis.status = 1
+        thesis.reservedOn = datetime.datetime.now()
+        thesis.completedOn = None
 
         db.session().commit()        
     
@@ -271,7 +266,7 @@ def thesis_checkout(thesis_id):
 @login_required
 def thesis_delete(thesis_id):
    
-    t = Thesis.query.get(thesis_id)
+    thesis = Thesis.query.get(thesis_id)
     #only admins can delete theses
     if not current_user.admin:
        
@@ -279,13 +274,13 @@ def thesis_delete(thesis_id):
 
   
     #Remove sciences from association table
-    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == t.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
+    thesis_scis = Science.query.join(science2thesis).join(Thesis).filter(science2thesis.c.thesisID == thesis.thesisID and science2thesis.c.scienceID == Science.scienceID).all()
     for sci in thesis_scis:
         print(sci.scienceID)
-        t.sciences.remove(sci)
+        thesis.sciences.remove(sci)
     db.session().commit()
 
-    db.session().delete(t)
+    db.session().delete(thesis)
     db.session().commit()
 
     return redirect(url_for("theses_index"))
@@ -302,19 +297,19 @@ def theses_create():
     if not form.validate():
         return render_template("theses/new.html", form = form)
 
-    t = Thesis(form.title.data, form.description.data, current_user.userID)
+    thesis = Thesis(form.title.data, form.description.data, current_user.userID)
     # Get the attached sciences
     science_ids = form.science.data 
       
-    db.session().add(t)
+    db.session().add(thesis)
     db.session().commit()
     # Get newly created Thesis object
-    db.session.refresh(t)
+    db.session.refresh(thesis)
 
     for id in science_ids:
-        s = Science.query.get(id)
+        sci = Science.query.get(id)
         # Add associations to science2thesis
-        t.sciences.append(s)
+        thesis.sciences.append(sci)
         db.session().commit()
 
     

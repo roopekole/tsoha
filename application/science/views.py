@@ -15,9 +15,9 @@ def scis_index():
 @login_required(role="ADMIN")
 def sci_delete(sci_id):
    
-    d = Science.query.get(sci_id)
+    sci = Science.query.get(sci_id)
     
-    db.session().delete(d)
+    db.session().delete(sci)
     db.session().commit()
 
     return redirect(url_for("scis_index"))
@@ -35,9 +35,9 @@ def sci_create():
     if not form.validate():
         return render_template("science/new.html", form = form)
 
-    t = Science(form.name.data)
+    sci = Science(form.name.data)
     
-    db.session().add(t)
+    db.session().add(sci)
     db.session().commit()
   
     return redirect(url_for("scis_index"))

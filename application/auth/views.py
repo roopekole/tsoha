@@ -104,9 +104,9 @@ def account_update(account_id):
 def user_delete(account_id):
     if not current_user.admin:
         return "Access denied"
-    u = User.query.get(account_id)
+    user = User.query.get(account_id)
     
-    db.session().delete(u)
+    db.session().delete(user)
     db.session().commit()
 
     return redirect(url_for("accounts_index"))
@@ -135,10 +135,10 @@ def account_create():
         form.admin.data = 1
   
     
-    u = User(form.username.data, form.firstname.data, form.lastname.data, sha256_crypt.hash(form.password.data), form.departments.data, form.admin.data)
+    user = User(form.username.data, form.firstname.data, form.lastname.data, sha256_crypt.hash(form.password.data), form.departments.data, form.admin.data)
     
   
-    db.session().add(u)
+    db.session().add(user)
     db.session().commit()
   
     return redirect(url_for("accounts_index"))
