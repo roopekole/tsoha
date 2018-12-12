@@ -79,6 +79,9 @@ If several search criteria are entered, theses containing any of the criteria ar
 
 On the bottom of the table the count of theses pertaining to the searched criteria is shown.
 
+**Viewing single thesis details**
+User may view the single thesis details by double clicking the table of the thesis. Thesis data is shown in read-only mode. User may return to the thesis list by pressing 'Back' button on the bottom of the thesis view window.
+
 **Submitting a new thesis topic**
 _Requires authorization_
 
