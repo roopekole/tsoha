@@ -1,5 +1,6 @@
 from application import db
 from application.models import Base
+from sqlalchemy.sql import text
 class User(Base):
 
     __tablename__ = "account"
@@ -8,7 +9,8 @@ class User(Base):
     firstName = db.Column(db.String(144), nullable=False)
     lastName = db.Column(db.String(144), nullable=False)
     password = db.Column(db.String(144), nullable=False)
-    admin = db.Column(db.Integer)
+    admin = db.Column(db.Integer) # Kept as integer for future admin role types
+    inactive = db.Column(db.Boolean)
     department = db.Column(db.Integer, db.ForeignKey('department.departmentID'),
                            nullable=True)
     
@@ -38,5 +40,13 @@ class User(Base):
 
     def roles(self):
         return ["ADMIN"]
+
+    @staticmethod
+    def countInactives():
+        stmt = text("SELECT COUNT(userID) FROM account WHERE inactive = 1 LIMIT 1")
+        result = db.engine.execute(stmt)
+        for row in result:
+            count = row[0]
+        return count
 
    

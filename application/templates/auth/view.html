@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+<form method="POST" action="{{url_for('account_update', account_id=user.userID)}}">
+        <fieldset disabled>
+    <div class="form-group">
+        
+        {{ form.username.label }}
+        {{ form.username }}
+
+    </div>
+    <div class="form-group">
+        
+        {{ form.firstname.label }}
+        {{ form.firstname }}
+        {% for error in form.firstname.errors %}
+        {{ error }}
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        {{ form.lastname.label }}
+        {{ form.lastname }}
+        {% for error in form.lastname.errors %}
+        {{ error }}
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.departments.label }}
+        {{ form.departments }}
+        {% for error in form.departments.errors %}
+        {{ error }}
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.admin }}
+        {{ form.admin.label }}
+    </div>
+
+    
+    </fieldset>
+    </form>
+    <a class="btn btn-info" href="{{url_for('accounts_index')}}" role="button">Back</a>
+</div>
+    {% endblock %}

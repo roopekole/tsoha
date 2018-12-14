@@ -7,8 +7,9 @@ Login:
 - Supervisor: test@gmail.com / test
 
 Tiedetyt bugit:
-- Search: ei vielä implementoitu
-- Thesis taso ei päivity
+- Sivutuksen ja haun kanssa yhteistominnallisuus bugi (kts. issue)
+- Master data management notificaiton badge ei päivity (jäänee tehtäväksi tulevaisuuteen / nice-to-have feature)
+- Käyttäjä taulu ei muutu scrollattavaksi (koskee vain alle 500px levyistä näyttöä - ei paha ongelma)
 
 (Inspiraation lähde: http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Graduaiheet.html)
 
@@ -16,13 +17,14 @@ Sovellus oppilaitoksen lopputöiden aihepiirien hallintaan. Opiskelija hakee oma
 
 Toimintoja:
 
-- Kirjautuminen (ohjaajalle)
-- Oman tieteenalan hallinnointi (ohjaajalle)
+- Kirjautuminen + rekisteröityminen (ohjaaja, admin)
+- Master datan hallinnointi (admin)
 - Aiheen kirjaus ja muokkaus (ohjaajalle)
 - Aiheen poistaminen (vain jos sitä ei ole varattu, ohjaajalle)
 - Aiheen varaus opiskelijalle (ohjaajalle)
 - Käynnissä olevien aiheiden luettelo aihepiireittäin (oppilaalle)
 - Valmisteilla olevien luettelo aihepiireittäin (oppilaalle)
 - Valmiiden gradujen luettelo (oppilaalle)
-- Gradun historiatiedot (ohjaajalle)
-- Historiamerkinnän teko ja korjaus graduun liittyen (ohjaajalle)
+- Luetteloiden selaus, sorttaus ja niistä etsiminen
+
+Dokumentaatio (englanniksi)

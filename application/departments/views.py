@@ -15,9 +15,9 @@ def depts_index():
 @login_required(role="ADMIN")
 def dept_delete(dept_id):
    
-    d = Dept.query.get(dept_id)
+    dept = Dept.query.get(dept_id)
     
-    db.session().delete(d)
+    db.session().delete(dept)
     db.session().commit()
 
     return redirect(url_for("depts_index"))
@@ -36,13 +36,9 @@ def dept_create():
         return render_template("departments/new.html", form = form)
 
   
-    t = Dept(form.name.data)
-    
-    print("#############")
-    print(t)
-    print("#############")
+    dept = Dept(form.name.data)
   
-    db.session().add(t)
+    db.session().add(dept)
     db.session().commit()
   
     return redirect(url_for("depts_index"))

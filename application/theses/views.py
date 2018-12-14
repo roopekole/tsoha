@@ -73,7 +73,7 @@ def theses_index():
 
     user_details = User.query.filter(User.userID.in_(unique_ids)).all()
     form.supervisor.choices = [(user.userID, user.firstName + " " + user.lastName) for user in user_details]
-        
+
     
     return render_template("theses/list.html", search_applied = search_applied, form = form, theses = paginated_theses, statuses = statuses, depts = depts, page=page, per_page = per_page, pagination = pagination)
 
@@ -125,7 +125,11 @@ def thesis_finalize(thesis_id):
     if not ((thesis.userID == current_user.userID  or current_user.admin) and thesis.status == 1):
         return "Access denied"
     thesis.status = 2
-    thesis.completedOn = datetime.datetime.now()
+
+    # Get current time and strip the milliseconds
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    thesis.completedOn = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
+
     db.session().commit()
 
     return redirect(url_for("theses_index"))
@@ -280,7 +284,11 @@ def thesis_checkout(thesis_id):
 
         thesis.author = form.author.data
         thesis.status = 1
-        thesis.reservedOn = datetime.datetime.now()
+
+        # Get current time and strip the milliseconds
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        thesis.reservedOn = datetime.datetime.strptime(now, "%Y-%m-%d %H:%M:%S")
+
         thesis.completedOn = None
 
         db.session().commit()        

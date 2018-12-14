@@ -5,8 +5,9 @@
 
 {# Allow admin to manage users #}
     {% if (current_user.admin) %}
-    <a class="btn btn-outline-primary" href=" {{ url_for('account_form') }} " role="button">Create</a><br /><br />
-    <table>
+    <p><img height="15px" width="15px" src="{{url_for('static', filename='info.svg')}}" data-toggle="tooltip" title="Double click row to display single user."
+             data-placement="right"><img> <a class="btn btn-outline-primary" href=" {{ url_for('account_form') }} " role="button">Create</a></p>
+    <table id="usertable">
         <tr>
             <th>First name</th>
             <th>Last name</th>
@@ -15,10 +16,14 @@
             <th>Admin</th> 
             <th>Created</th> 
             <th>Last modified</th> 
-            <th colspan="2"></th>
+            <th colspan="3"></th>
         </tr>
         {% for user in users %}
-        <tr>
+        {% if user.inactive %}
+        <tr id="{{user.userID}}" class="item" style="color:cadetblue">
+        {% else %}    
+        <tr id="{{user.userID}}" class="item">
+       {% endif %}     
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.userID }}</td>
@@ -47,8 +52,12 @@
                     <input class="btn btn-outline-danger" type="submit" value="Delete">
                 </form>
                 {% endif %}
-                
             </td>
+            <td>{% if user.inactive %}
+                <form method="POST" action="{{url_for('user_activate', account_id=user.userID)}}">
+                        <input class="btn btn-success" type="submit" value="Activate">
+                    </form>
+                {% endif %}</td>
                 
             
         </tr>

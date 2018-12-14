@@ -165,10 +165,10 @@
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Master data management
+                            Master data management <span class="badge badge-light">{% if inactive_users == 0 %}{% else %}{{inactive_users}}{% endif %}</span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ url_for('accounts_index') }} ">Users</a>
+                            <a class="dropdown-item" href="{{ url_for('accounts_index') }} ">Users <span class="badge badge-light">{% if inactive_users == 0 %}{% else %}{{inactive_users}}{% endif %}</span></a>
                             <a class="dropdown-item" href="{{ url_for('scis_index') }}">Scientific areas</a>
                             <a class="dropdown-item" href="{{ url_for('depts_index') }}">Departments</a>
                         </div>
@@ -257,6 +257,14 @@
             });
         });
     </script>
+    <script>
+            $(document).ready(function () {
+                $('#usertable tr').dblclick(function () {
+                    window.open("{{ url_for('user_view', account_id='USER') }}".replace("USER", $(this).attr('id')), "_self");
+                    return false;
+                });
+            });
+        </script>
 </body>
 
 </html>

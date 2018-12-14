@@ -46,6 +46,10 @@
                         <a class="btn btn-outline-light" href="{{ url_for('auth_logout') }}" role="button">Logout</a>
                     {% else %}
                             <a class="btn btn-outline-light" href="{{ url_for('auth_login') }}" role="button">Login</a>
+                            <br /><br /><br /> 
+                            <p class="lead">Or if you do not have an access, please register.
+                              </p>
+                              <a class="btn btn-outline-success" href="{{ url_for('account_form') }}" role="button">Register</a>
                     {% endif %}
         </p>
       </main>

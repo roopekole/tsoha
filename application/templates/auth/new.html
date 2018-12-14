@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="container">
-<form method="POST" action="{{ url_for('account_create') }}">
+    <form method="POST" action="{{ url_for('account_create') }}">
         <div class="form-group">
 
             {{ form.username.label }}
@@ -43,14 +43,21 @@
             {% endfor %}
         </div>
 
+        {% if current_user.admin %}
         <div class="form-group">
+
             {{ form.admin }}
             {{ form.admin.label }}
         </div>
+        {% endif %}
 
         <input class="btn btn-primary" type="submit" value="Submit" />
+        {% if current_user.is_authenticated %}
         <a class="btn btn-danger" href="{{url_for('accounts_index')}}" role="button">Cancel</a>
- 
-</form>
+        {% else %}
+        <a class="btn btn-danger" href="{{url_for('index')}}" role="button">Cancel</a>
+        {% endif %}
+
+    </form>
 </div>
-        {% endblock %}
+{% endblock %}

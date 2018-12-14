@@ -76,5 +76,8 @@ from application.science import views
 def load_user(user_id):
     return User.query.get(user_id)
 
-# Luodaan lopulta tarvittavat tietokantataulut
+# Create the needed tables
 db.create_all()
+
+# Pass inactive users to the management badge
+app.jinja_env.globals.update(inactive_users=User.countInactives())

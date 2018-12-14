@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
 
 class NewAccountForm(FlaskForm):
     username = EmailField('Email address:', [validators.DataRequired(), validators.Email()], render_kw={"class": "form-control"})
-    password = PasswordField("Password:", [validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
+    password = PasswordField("Password:", [validators.Length(min=6, max=144)], render_kw={"class": "form-control"})
     firstname = StringField("First name:",[validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
     lastname = StringField("Last name:",[validators.Length(min=2, max=144)], render_kw={"class": "form-control"})
     departments = SelectField('Department', coerce=int,  render_kw={"class": "form-control"})
