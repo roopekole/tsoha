@@ -57,7 +57,7 @@ def theses_index():
         search_applied = 0
     
     #Pagination
-    def get_theses(offset=0, per_page=10):
+    def get_theses(offset=0, per_page=8):
         return theses[offset: offset + per_page]
 
     page, per_page, offset = get_page_args(page_parameter="page",
@@ -84,6 +84,14 @@ def thesis_view(thesis_id):
     # Get the thesis details pre-filled for editing / viewing
     form = ThesisViewForm(obj=thesis, username = thesis.userID, createdon = thesis.createdOn, modifiedon = thesis.modifiedOn)
     
+    # Fetch full supervisor information
+    thesis_user = User.query.filter(User.userID == thesis.userID).first()
+    thesis_user_name = thesis_user.firstName + " " + thesis_user.lastName
+    form.user = thesis_user_name
+
+    # Fetch the department name of the supervisor
+    dept = Dept.query.filter(Dept.departmentID == thesis_user.department).first().name
+
     #Fetch available sciences
     sciences = Science.query.all()
     form.science.choices = [(science.scienceID, science.name) for science in sciences]
@@ -94,7 +102,7 @@ def thesis_view(thesis_id):
 
     form.status = thesis.status
 
-    return render_template("theses/view.html", form = form)
+    return render_template("theses/view.html", form = form, dept = dept, name = thesis_user_name, completed = thesis.completedOn, progressing = thesis.reservedOn)
 
 @app.route("/theses/new/")
 @login_required

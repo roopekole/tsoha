@@ -16,10 +16,11 @@ class ThesisViewForm(FlaskForm):
     title = StringField("Thesis working title",  render_kw={"readonly class": "form-control"})
     description = TextAreaField("Description",  render_kw={"readonly class": "form-control"})
     science = SelectMultipleField('Science(s)',coerce=int,  render_kw={"readonly class": "chosen-select"})
-    level = RadioField('Level', choices=[(0, 'Bachelor'), (1, 'Master')], coerce=int, render_kw={"class": "form-check-input"})
-    status = StringField('Status', render_kw={"readonly class": "form-control"} )
+    level = RadioField("Level", choices=[(0, 'Bachelor'), (1, 'Master')], coerce=int, render_kw={"disabled clases": "form-check"})
+    status = StringField("Status", render_kw={"readonly class": "form-control"} )
     createdon = DateTimeField("Created on", render_kw={"readonly class": "form-control"})
     modifiedon = DateTimeField("Modified on", render_kw={"readonly class": "form-control"})
+    
     class Meta:
         csrf = False
 

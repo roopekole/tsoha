@@ -5,22 +5,55 @@
     <form action=""></form>
     <div class="form-group">
 
-        {{ form.username.label }}
-        {{ form.username }}
-
+        {{ form.status.label }}
+        {% if form.status == 0 %}
+        <div class="alert alert-success" role="alert">
+            Thesis is currently available
+        </div>
+        {% elif form.status == 1 %}
+        <div class="alert alert-warning" role="alert">
+            Thesis is currently progressing
+            {% if progressing is not none %}
+            (reserved on {{progressing}})
+            {% endif %}
+        </div>
+        {% elif form.status == 2 %}
+        <div class="alert alert-primary" role="alert">
+            Thesis is completed
+            {% if completed is not none %}
+            (completed on {{completed}})
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <div class="form-row">
+        <div class="col">
+            <label for="username">Name</label>
+            <input id="username" name="username" readonly class="form-control" type="text" value="{{name}}">
+        </div>
+        <div class="col">
+            {{ form.username.label }}
+            {{ form.username }}
+            </div>
+        </div>
+        <div class="form-row">
+            <label for="deparment">Department</label>
+            <input id="deparment" name="deparment" readonly class="form-control" type="text" value="{{dept}}">
+        </div>
     </div>
     <div class="form-group">
 
         {{ form.title.label }}
         {{ form.title }}
-        
+
 
     </div>
     <div class="form-group">
 
         {{ form.description.label }}
         {{ form.description }}
-       
+
     </div>
     <div class="form-group">
 
@@ -29,20 +62,14 @@
 
 
     </div>
-    <div class="form-group">
+    <div class="form-check">
         {% for subfield in form.level %}
-        
+
         {{ subfield }}
         {{ subfield.label }}
         {% endfor %}
 
 
-    </div>
-    <div class="form-group">
-
-        {{ form.status.label }}
-        {{ form.status }}
-       
     </div>
 
     <a class="btn btn-info" href="{{url_for('theses_index')}}" role="button">Back</a>
@@ -63,6 +90,6 @@
                 {{ form.modifiedon }}
             </div>
         </div>
-    </div>  
+    </div>
 </div>
 {% endblock %}
