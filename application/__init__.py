@@ -80,4 +80,5 @@ def load_user(user_id):
 db.create_all()
 
 # Pass inactive users to the management badge
-app.jinja_env.globals.update(inactive_users=User.countInactives())
+# This is currently causing trouble in heroku and not yet fully functional locally either
+#app.jinja_env.globals.update(inactive_users=User.countInactives())
