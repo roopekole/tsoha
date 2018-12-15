@@ -31,8 +31,6 @@
             <td>{% if user.admin == 1 %}&#10004;{% endif %}</td>
             <td>{{ user.createdOn }}</td>
             <td>{{ user.modifiedOn }}</td>
-            
-            
 
             <td>
                 <form method="GET" action="{{ url_for('account_edit', account_id=user.userID) }}">
