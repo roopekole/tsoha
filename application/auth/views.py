@@ -56,7 +56,7 @@ def user_view(account_id):
                        departments = user.department)
     form.departments.choices = [(department.departmentID, department.name) for department in departments]
 
-    return render_template("auth/view.html", user=user, form = form)
+    return render_template("auth/view.html", count = User.countTheses(), user=user, form = form)
 
 @app.route("/account", methods=["GET"])
 def accounts_index():

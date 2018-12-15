@@ -2,6 +2,13 @@
 
 {% block body %}
 <div class="container">
+    {# shown only for supervisor users #}
+        {% for user in count %}
+        {% if user.id == form.username.data %}
+        <p> This user has {{user.name}} theses submitted</p>
+          {% endif %}
+        {% endfor %}
+   
 <form method="POST" action="{{url_for('account_update', account_id=user.userID)}}">
         <fieldset disabled>
     <div class="form-group">

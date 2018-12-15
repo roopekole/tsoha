@@ -41,12 +41,24 @@ class User(Base):
     def roles(self):
         return ["ADMIN"]
 
-    """@staticmethod
+    @staticmethod
     def countInactives():
-        stmt = text("SELECT COUNT('account.userID') FROM account WHERE 'account.inactive' = 1 LIMIT 1")
+        stmt = text("SELECT COUNT(account.userID) FROM account WHERE account.inactive LIMIT 1")
         result = db.engine.execute(stmt)
         for row in result:
             count = row[0]
-        return count"""
+        return count
+    
+    @staticmethod
+    def countTheses():
+        stmt = text("SELECT account.userID, COUNT(thesis.thesisID) FROM account"
+                    " LEFT JOIN thesis ON thesis.userID = account.userID"
+                    " WHERE account.admin = 0"
+                    " GROUP BY account.userID")
+        result = db.engine.execute(stmt)
+        count = []
+        for row in result:
+            count.append({"id":row[0], "name":row[1]})
 
+        return count
    
