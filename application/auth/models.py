@@ -41,12 +41,12 @@ class User(Base):
     def roles(self):
         return ["ADMIN"]
 
-    @staticmethod
+    """@staticmethod
     def countInactives():
         stmt = text("SELECT COUNT('account.userID') FROM account WHERE 'account.inactive' = 1 LIMIT 1")
         result = db.engine.execute(stmt)
         for row in result:
             count = row[0]
-        return count
+        return count"""
 
    
