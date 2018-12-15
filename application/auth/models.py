@@ -43,7 +43,7 @@ class User(Base):
 
     @staticmethod
     def countInactives():
-        stmt = text("SELECT COUNT(account.userID) FROM account WHERE account.inactive LIMIT 1")
+        stmt = text("SELECT COUNT('userID') FROM account WHERE inactive LIMIT 1")
         result = db.engine.execute(stmt)
         for row in result:
             count = row[0]
@@ -58,7 +58,7 @@ class User(Base):
         result = db.engine.execute(stmt)
         count = []
         for row in result:
-            count.append({"id":row[0], "name":row[1]})
+            count.append({"id":row[0], "count":row[1]})
 
         return count
    

@@ -5,7 +5,7 @@
     {# shown only for supervisor users #}
         {% for user in count %}
         {% if user.id == form.username.data %}
-        <p> This user has {{user.name}} theses submitted</p>
+        <p> This user has <b>{{user.count}}</b> theses submitted</p>
           {% endif %}
         {% endfor %}
    
