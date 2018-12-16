@@ -1,45 +1,52 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <div class="container">
-{# Allow admin to manage sciences #}
+<div class="container">
+    {# Allow admin to manage sciences #}
     {% if (current_user.admin) %}
-<a class="btn btn-outline-primary" href=" {{ url_for('sci_form') }} " role="button">Create</a><br /><br />
+    <a class="btn btn-outline-primary" href=" {{ url_for('sci_form') }} " role="button">Create</a><br /><br />
 
-
-<table>
-    <tr>
-        <th>Science</th>
-        <th>Created</th>
-        <th></th>
-    </tr>
-    {# a Show error if there are no sciences #}
-      {% if scis|length < 1 %}
-      <tr>
-          <td colspan="4">There are no sciences in the system - please create one</td>
-      </tr>
-    {% else %}
-    {% for sci in scis %}
-    <tr>
-        <td>{{ sci.name }}</td>
-        <td>{{ sci.createdOn }}</td>
-              
-        <td>
-            {% if sci.science2thesis|length > 0 %}
-            <a tabindex="0" class="btn btn-outline-danger" role="button" data-toggle="popover" data-trigger="focus" data-content="Science is associated with {{sci.science2thesis|length}} theses and cannot be deleted">
-                <s>Delete</s>
-            </a>
+    <table>
+        <tr>
+            <th>Science</th>
+            <th>Created</th>
+            <th>Thesis associations</th>
+            <th></th>
+        </tr>
+        {# a Show error if there are no sciences #}
+        {% if scis|length < 1 %} <tr>
+            <td colspan="4">There are no sciences in the system - please create one</td>
+            </tr>
             {% else %}
-            <form method="POST" action="{{ url_for('sci_delete', sci_id=sci.scienceID) }}">
-                <input class="btn btn-outline-danger" type="submit" value="Delete">
-            </form>
+            {% for sci in scis %}
+            <tr>
+                <td>{{ sci.name }}</td>
+                <td>{{ sci.createdOn }}</td>
+                <td>
+                    {% for id in prevented_scis %}
+                    {% if id.id == sci.scienceID %}
+                    {{id.count}}
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+
+                    {% if sci.science2thesis|length > 0 %}
+                    <a tabindex="0" class="btn btn-outline-danger" role="button" data-toggle="popover" data-trigger="focus"
+                        data-content="Science is associated with {{sci.science2thesis|length}} theses and cannot be deleted">
+                        <s>Delete</s>
+                    </a>
+                    {% else %}
+                    <form method="POST" action="{{ url_for('sci_delete', sci_id=sci.scienceID) }}">
+                        <input class="btn btn-outline-danger" type="submit" value="Delete">
+                    </form>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
             {% endif %}
-        </td>
-                 
-    </tr>
-    {% endfor %}
-    {% endif %}
-      {% endif %}
-</table>
+            {% endif %}
+    </table>
 </div>
 {% endblock %}

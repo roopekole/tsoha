@@ -11,7 +11,7 @@ def scis_index():
     if not current_user.admin:
         return "Access denied"
 
-    return render_template("science/list.html", scis = Science.query.all())
+    return render_template("science/list.html", prevented_scis = Science.sciWithThesis(), scis = Science.query.all())
 
 
 # Delete science
