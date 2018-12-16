@@ -1,4 +1,5 @@
-﻿﻿﻿# tsoha
+# tsoha
+
 Tietokantasovellus, harjoitustyö
 
 Sovellus osoitteessa: https://morning-garden-53294.herokuapp.com/ 
