@@ -66,6 +66,8 @@ Deploying to Heroku requires the following
    3. Heroku CLI (with env variables is installed)
    4. Requirements have not been added without adding them to requirements.txt
 
+**Deployment steps**
+   
 1. Create a directory for the application
 ```
 $ heroku create <project name>
