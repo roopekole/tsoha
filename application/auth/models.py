@@ -1,6 +1,7 @@
 from application import db
 from application.models import Base
 from sqlalchemy.sql import text
+import os
 class User(Base):
 
     __tablename__ = "account"
@@ -41,26 +42,53 @@ class User(Base):
     def roles(self):
         return ["ADMIN"]
 
-    @staticmethod
-    def countInactives():
-        stmt = text("SELECT COUNT('userID') FROM account WHERE inactive LIMIT 1")
-        result = db.engine.execute(stmt)
-        for row in result:
-            count = row[0]
-        return count
+    # Using different aggregate statements to deal with postgresqls double quotatation properties
+    # Note to self, do not use upper case in model attributes when dealing with postgres
+    # Alternatively the tables in postgres need to be created without quotation to force lowercase
+
+    if os.environ.get("HEROKU"):
+        @staticmethod
+        def countInactives():
+            stmt = text("SELECT COUNT('userID') FROM account WHERE inactive")
+            result = db.engine.execute(stmt)
+            for row in result:
+                count = row[0]
+            return count
     
-    # does not work locally
+        @staticmethod
+        def countTheses():
+            stmt = text("SELECT account.'userID', COUNT(thesis.'thesisID')"
+                        " FROM account LEFT JOIN thesis ON thesis.'userID' = account.'userID'"
+                        " WHERE account.admin = 0" 
+                        " GROUP BY account.'userID';")
+            result = db.engine.execute(stmt)
+            count = []
+            for row in result:
+                print(row[1])
+                count.append({"id":row[0], "count":row[1]})
 
-    @staticmethod
-    def countTheses():
-        stmt = text("SELECT 'account.userID' as user, COUNT('thesis.thesisID')"
-                    " FROM account LEFT JOIN thesis ON 'thesis.userID' = 'account.userID'"
-                    " WHERE account.admin = 0" 
-                    " GROUP BY user;")
-        result = db.engine.execute(stmt)
-        count = []
-        for row in result:
-            count.append({"id":row[0], "count":row[1]})
-
-        return count
+            return count
    
+    else:
+        @staticmethod
+        def countInactives():
+            stmt = text("SELECT COUNT(userID) FROM account WHERE inactive")
+            result = db.engine.execute(stmt)
+            for row in result:
+                count = row[0]
+            return count
+    
+        @staticmethod
+        def countTheses():
+            stmt = text("SELECT account.userID, COUNT(thesis.thesisID)"
+                        " FROM account LEFT JOIN thesis ON thesis.userID = account.userID"
+                        " WHERE account.admin = 0" 
+                        " GROUP BY account.userID;")
+            result = db.engine.execute(stmt)
+            count = []
+            for row in result:
+                print(row[1])
+                count.append({"id":row[0], "count":row[1]})
+
+            return count
+    
