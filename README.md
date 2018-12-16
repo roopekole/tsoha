@@ -1,4 +1,4 @@
-﻿# tsoha
+﻿﻿# tsoha
 Tietokantasovellus, harjoitustyö
 
 Sovellus osoitteessa: https://morning-garden-53294.herokuapp.com/ 
@@ -7,8 +7,9 @@ Login:
 - Supervisor: test@gmail.com / test
 
 Tiedetyt bugit:
+
+Tulevat korjaukset ja bugin kokonaisuudessaan [(https://github.com/roopekole/tsoha/issues)](https://github.com/roopekole/tsoha/issues) 
 - Sivutuksen ja haun kanssa yhteistominnallisuus bugi (kts. issue)
-- Master data management notificaiton badge ei päivity (jäänee tehtäväksi tulevaisuuteen / nice-to-have feature)
 - Käyttäjä taulu ei muutu scrollattavaksi (koskee vain alle 500px levyistä näyttöä - ei paha ongelma)
 
 (Inspiraation lähde: http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Graduaiheet.html)
