@@ -1,4 +1,4 @@
-﻿﻿# tsoha
+﻿﻿﻿# tsoha
 Tietokantasovellus, harjoitustyö
 
 Sovellus osoitteessa: https://morning-garden-53294.herokuapp.com/ 
@@ -38,3 +38,29 @@ Dokumentaatio (englanniksi)
 [Asennusopas (Installation guide)](https://github.com/roopekole/tsoha/blob/master/documentation/installation_guide.md)
 
 [Tietokantakaavio (Database chart)](https://github.com/roopekole/tsoha/blob/master/documentation/database_chart.txt)
+
+Tsoha-projektin vaatimukset
+
+- [x] Aiheen kuvaus (readme)
+- [x] Käyttöohje
+- [x] Asennusohje
+- [x] Työn ja sovelluksen rajoitteet (issuet, readme, käyttötapaukset)
+- [x] Työn puuttuvat ominaisuudet (issuet)
+- [x] Käyttötapaukset / user storyt ja niihin liittyvät SQL-kyselyt
+- [x] Tietokantarakenteen kuvaus
+- [x] Tietokantataulujen normalisointi 
+- [x] Tietokantakaavion sisällyttäminen dokumentaatioon
+- [x] Tietokantakaavion ja todellisen tietokannan vastaavuus
+- [x] CREATE TABLE -lauseet sekä indeksien lisäykset (indeksejä ei toteutettu)
+- [x] Ohjelmassa ei SQL-injektiomahdollisuuksia (Polut suojattu)
+- [x] isoksi kasvavissa listauksissa sivutus (Thesis listauksesta löytyy)
+- [x] käyttäjien syötteet validoidaan palvelimella (ja vastaa tietokannan vaateita)
+- [x] kyselyiden toteuttaminen tehokkaasti (käytössä kymmenkunta join kyselyä)
+- [x] sovelluksissa käytössä ja toteutettuna monimutkaisempia yhteenvetokyselyitä (User-luokassa kaksi yhteenvetokyselyksi luokiteltua raaka-SQL -lausetta
+- [x] Ei rikkinäisiä linkkejä, lomakkeet toimivat kun syöte järkevä
+- [x] Sovellus toimii vaikka syöte ei järkevää (validointi joko palvelimella tai selaimella)
+- [x] Tiedon hakeminen
+- [x] Yksi N-N assosiaatio kahden tietokohteen välillä (Thesis-Science)
+- [x] Neljä tietokohdetta
+- [x] Kahteen tietokohteeseen (Thesis, User) CRUD (yhden kohteen read, kohteen editointi, kohteen poisto, kohteen luonti)
+- [x] Kirjautuminen ja käyttäjän yhdistäminen tietokohteeseen (käyttäjä-thesis)

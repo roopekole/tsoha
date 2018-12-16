@@ -7,9 +7,10 @@ account
 userID PK string #email
 firstName string
 lastName string
-password string
-admin boolean, #1 thesis supervisor, 0 system admin
-departmentID string FK >- department.departmentID
+password string #hashed password
+admin integer, #0 thesis supervisor, 1 system admin, implemented as integer to support additional roles
+department integer FK >- department.departmentID
+inactive boolean
 createdOn datetime
 modifiedOn datetime
 
@@ -19,9 +20,9 @@ thesisID PK string
 userID string FK >- account.userID
 title string
 description string
-level int # 0    BSc., 1 MSc. thesis
+level boolean # 0    BSc., 1 MSc. thesis
 author string
-status int #0 available, 1 in progress, 2 completed
+status integer #0 available, 1 in progress, 2 completed
 createdOn datetime #date when entered as available thesis
 reservedOn datetime #date when reserved for a student
 completedOn datetime #date when submitted/graded, finalization date
@@ -29,19 +30,19 @@ modifiedOn datetime
 
 department
 -
-departmentID PK int
+departmentID PK integer
 name string
 createdOn datetime
 modifiedOn datetime
 
 science
 -
-scienceID PK int
+scienceID PK integer
 name string
 createdOn datetime
 modifiedOn datetime
 
 science2thesis
 -
-thesisID int FK >- thesis.thesisID
-scienceID int FK >- science.scienceID
+thesisID integer FK >- thesis.thesisID
+scienceID integer FK >- science.scienceID
