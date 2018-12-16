@@ -12,6 +12,7 @@ Please read Readme to learn about the application overview
 		 * by supervisor
 		 * by supervisor's department
 		 * by availability
+	
 	1.2. Contacts to thesis supervisors
 	- Each thesis discloses supervisor's
 	   * email
@@ -122,13 +123,13 @@ _Aggregate queries are sligtly different based on the SQL (here SQLite)_
 
 - Getting notification about registered users (aggregate query)
 ```sql
-SELECT account.userID, COUNT(thesis.thesisID) FROM account
-    LEFT JOIN thesis ON thesis.userID = account.userID
-    GROUP BY account.userID
+SELECT COUNT(userID) FROM account WHERE inactive
 ```
 
 - Displaying the number of submitted theses of the supervisor (aggregate query)
 ```sql
-SELECT COUNT(userID) FROM account WHERE inactive
+SELECT account.userID, COUNT(thesis.thesisID) FROM account
+    LEFT JOIN thesis ON thesis.userID = account.userID
+    GROUP BY account.userID
 ```
 

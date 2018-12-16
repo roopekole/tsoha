@@ -88,6 +88,7 @@ On the bottom of the table the count of theses pertaining to the searched criter
 User may view the single thesis details by double clicking the table of the thesis. Thesis data is shown in read-only mode. User may return to the thesis list by pressing 'Back' button on the bottom of the thesis view window.
 
 **Submitting a new thesis topic**
+
 _Requires authorization_
 
 Logged user can submit a new theses by clicking 'Create' button on top of the 'Thesis list'
@@ -99,11 +100,13 @@ After completing the form, user may submit a new thesis topic by clicking 'Submi
 After succesfull thesis submission, new thesis is inserted to 'Thesis list'. Thesis supervisor and department along with the creation and modification dates are inserted automatically.
 
 **Editing a submitted thesis**
+
 _Requires authorization_
 
 Supervisor may edit their self-submitted theses which have 'Available' status by clicking 'Edit'. System admin may edit any of the theses at any time.
 
 **Checkout thesis for an author**
+
 _Requires authorization_
 
 Supervisor may checkout their self-submitted theses which have 'Available' status by clicking 'Edit' in 'Thesis list'. Edit mode offers a possibility to reserve the thesis topic for a student through 'Checkout for a stundet' button. Admin user may access checkout mode at any time for any thesis.
@@ -113,6 +116,7 @@ User is requested to enter thesis level and the author for the thesis. User may 
 After successful checkout, the status of the thesis changes to 'Progressing' and reserved date is completed automatically.
 
 **Clearing and editing checkout**
+
 _Requires admin authorization_
 
 Admin user may clear or edit student checkout by editing a submitted thesis and entering the checkout mode. Admin may change the level of the thesis or edit the author of the thesis. Admin may also clear the checkout completely by pressing 'Clear student checkout'
@@ -120,6 +124,7 @@ Admin user may clear or edit student checkout by editing a submitted thesis and 
 If student checkout is cleared, thesis status changes to 'Available' and author and level data is cleared for the thesis.
 
 **Finalizing a thesis**
+
 _Requires authorization_
 
 Supervisor may finalize the self-submitted thesis by clicking 'Finalize' button. Finalization may be executed for theses which are in 'Progressing' state. Admin may finalize any thesis.
@@ -127,11 +132,13 @@ Supervisor may finalize the self-submitted thesis by clicking 'Finalize' button.
 After thesis has been finalized, the status of the thesis is changed to 'Completed' and completion date is filled automatically.
 
 **Return thesis from completed state**
+
 _Requires admin authorization_
 
 Admin user may return completed thesis back to 'Progressing' state. This may be done by accessing thesis in checkout mode and saving (no changes are necessary).
 
 **Deleting a theses**
+
 _Requires admin authorization_
 
 Admin may delete theses which are in 'Available' state. Deletion of the theses in other states is prevented. Admin may delete theses in state other than 'Available' by returning the theses to 'Available' state.
