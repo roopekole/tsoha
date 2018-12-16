@@ -49,7 +49,7 @@ class User(Base):
     if os.environ.get("HEROKU"):
         @staticmethod
         def countInactives():
-            stmt = text("SELECT COUNT('userID') FROM account WHERE inactive")
+            stmt = text('SELECT COUNT("userID") FROM account WHERE inactive')
             result = db.engine.execute(stmt)
             for row in result:
                 count = row[0]
@@ -57,10 +57,10 @@ class User(Base):
     
         @staticmethod
         def countTheses():
-            stmt = text("SELECT account.'userID', COUNT(thesis.'thesisID')"
-                        " FROM account LEFT JOIN thesis ON thesis.'userID' = account.'userID'"
-                        " WHERE account.admin = 0" 
-                        " GROUP BY account.'userID';")
+            stmt = text('SELECT account."userID", COUNT(thesis."thesisID")'
+                        ' FROM account LEFT JOIN thesis ON thesis."userID" = account."userID"'
+                        ' WHERE account.admin = 0' 
+                        ' GROUP BY account."userID";')
             result = db.engine.execute(stmt)
             count = []
             for row in result:
