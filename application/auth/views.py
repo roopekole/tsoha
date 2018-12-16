@@ -70,7 +70,6 @@ def account_form():
 
     #Everyone can access the new account form
     # Admin property show only to main users in template
-
     departments = Dept.query.all()
     form = NewAccountForm()
     form.departments.choices = [(department.departmentID, department.name) for department in departments]
@@ -86,6 +85,8 @@ def user_activate(account_id):
     user.inactive = 0
 
     db.session().commit()
+
+    app.jinja_env.globals.update(inactive_users=User.countInactives())
     return redirect(url_for("accounts_index"))
 
 @app.route("/account/<account_id>/", methods=["GET"])
@@ -175,5 +176,9 @@ def account_create():
         return_url = "accounts_index"
     db.session().add(user)
     db.session().commit()
-  
+
+    # Pass inactive users to the management badge
+    # This is currently causing trouble in heroku and not yet fully functional locally either
+    app.jinja_env.globals.update(inactive_users=User.countInactives())
+
     return redirect(url_for(return_url))
