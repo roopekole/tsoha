@@ -11,6 +11,7 @@ Tiedetyt bugit:
 Tulevat korjaukset ja bugin kokonaisuudessaan [(https://github.com/roopekole/tsoha/issues)](https://github.com/roopekole/tsoha/issues) 
 - Sivutuksen ja haun kanssa yhteistominnallisuus bugi (kts. issue)
 - Käyttäjä taulu ei muutu scrollattavaksi (koskee vain alle 500px levyistä näyttöä - ei paha ongelma)
+- Showing 'Access denied' also when user is not logged in and tries to insert forbidden path - now returns error
 
 (Inspiraation lähde: http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Graduaiheet.html)
 

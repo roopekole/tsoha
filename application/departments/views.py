@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 
 from application import app, db, login_required
 from application.departments.models import Dept
@@ -7,6 +7,10 @@ from application.departments.forms import DeptForm
 
 @app.route("/departments", methods=["GET"])
 def depts_index():
+
+    if not current_user.admin:
+        return "Access denied"
+
     return render_template("departments/list.html", depts = Dept.query.all())
 
 

@@ -7,6 +7,10 @@ from application.science.forms import SciForm
 
 @app.route("/sciences", methods=["GET"])
 def scis_index():
+
+    if not current_user.admin:
+        return "Access denied"
+
     return render_template("science/list.html", scis = Science.query.all())
 
 

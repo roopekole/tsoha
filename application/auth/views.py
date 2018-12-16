@@ -47,6 +47,10 @@ def auth_logout():
 
 @app.route("/account/view/<account_id>")
 def user_view(account_id):
+    
+    if not current_user.admin:
+        return "Access denied"
+    
     user = User.query.get(account_id)
     
     departments = Dept.query.all()
@@ -58,8 +62,12 @@ def user_view(account_id):
 
     return render_template("auth/view.html", count = User.countTheses(), user=user, form = form)
 
-@app.route("/account", methods=["GET"])
+@app.route("/account")
 def accounts_index():
+
+    if not current_user.admin:
+        return "Access denied"
+
     users =  User.query.outerjoin(Dept, User.department == Dept.departmentID).all()
     theses_users = Thesis.query.distinct(Thesis.userID)
     theses_users = [user.userID for user in theses_users]
@@ -76,6 +84,7 @@ def account_form():
     return render_template("auth/new.html", form = form)
 
 @app.route("/account/activate/<account_id>", methods=["POST"])
+@login_required(role="ADMIN")
 def user_activate(account_id):
 
     if not current_user.admin:
