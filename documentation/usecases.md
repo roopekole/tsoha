@@ -133,3 +133,63 @@ SELECT account.userID, COUNT(thesis.thesisID) FROM account
     GROUP BY account.userID
 ```
 
+
+
+**Create table statements**
+
+```sql
+CREATE TABLE science (
+        "createdOn" DATETIME,
+        "modifiedOn" DATETIME,
+        "scienceID" INTEGER NOT NULL,
+        name VARCHAR(144) NOT NULL,
+        PRIMARY KEY ("scienceID")
+);
+
+CREATE TABLE department (
+        "createdOn" DATETIME,
+        "modifiedOn" DATETIME,
+        "departmentID" INTEGER NOT NULL,
+        name VARCHAR(144) NOT NULL,
+        PRIMARY KEY ("departmentID")
+);
+
+CREATE TABLE account (
+        "createdOn" DATETIME,
+        "modifiedOn" DATETIME,
+        "userID" VARCHAR(100) NOT NULL,
+        "firstName" VARCHAR(144) NOT NULL,
+        "lastName" VARCHAR(144) NOT NULL,
+        password VARCHAR(144) NOT NULL,
+        admin INTEGER,
+        inactive BOOLEAN,
+        department INTEGER,
+        PRIMARY KEY ("userID"),
+        CHECK (inactive IN (0, 1)),
+        FOREIGN KEY(department) REFERENCES department ("departmentID")
+);
+
+CREATE TABLE thesis (
+        "createdOn" DATETIME,
+        "modifiedOn" DATETIME,
+        "thesisID" INTEGER NOT NULL,
+        title VARCHAR(144) NOT NULL,
+        description VARCHAR(500) NOT NULL,
+        level BOOLEAN,
+        author VARCHAR(144),
+        status INTEGER,
+        "completedOn" DATETIME,
+        "reservedOn" DATETIME,
+        "userID" VARCHAR NOT NULL,
+        PRIMARY KEY ("thesisID"),
+        CHECK (level IN (0, 1)),
+        FOREIGN KEY("userID") REFERENCES account ("userID")
+);
+
+CREATE TABLE science2thesis (
+        "thesisID" INTEGER,
+        "scienceID" INTEGER,
+        FOREIGN KEY("thesisID") REFERENCES thesis ("thesisID"),
+        FOREIGN KEY("scienceID") REFERENCES science ("scienceID")
+);
+```
