@@ -56,7 +56,7 @@ Tsoha-projektin vaatimukset
 - [x] isoksi kasvavissa listauksissa sivutus (Thesis listauksesta löytyy)
 - [x] käyttäjien syötteet validoidaan palvelimella (ja vastaa tietokannan vaateita)
 - [x] kyselyiden toteuttaminen tehokkaasti (käytössä kymmenkunta join kyselyä)
-- [x] sovelluksissa käytössä ja toteutettuna monimutkaisempia yhteenvetokyselyitä (User-luokassa kaksi yhteenvetokyselyksi luokiteltua raaka-SQL -lausetta
+- [x] sovelluksissa käytössä ja toteutettuna monimutkaisempia yhteenvetokyselyitä (User-luokassa kaksi yhteenvetokyselyksi luokiteltua raaka-SQL -lausetta, Science-luokassa yksi kysely)
 - [x] Ei rikkinäisiä linkkejä, lomakkeet toimivat kun syöte järkevä
 - [x] Sovellus toimii vaikka syöte ei järkevää (validointi joko palvelimella tai selaimella)
 - [x] Tiedon hakeminen
