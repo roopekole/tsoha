@@ -38,6 +38,7 @@ $ pip install -r requirements.txt
 $ python run.py
 ```
 
+_GitHub repository contains a pre-populated database file. You may delete file or use it directly. If the file is deleted, the tables are created automatically_
 
 **Create admin user**
 
@@ -54,4 +55,38 @@ sqlite> INSERT INTO account (userID, firstName, lastName, password, admin) VALUE
 _Passowrd needs to be sha256 encrypted and salted. Application is using passlib hashing. Sting can be hashed by_
 ```
 $ python -c "from passlib.hash import sha256_crypt; print(sha256_crypt.hash('test'))";
+```
+
+## Deploying the application to Heroku
+
+Deploying to Heroku requires the following
+
+   1. Application has been installed according to the above specifications
+   2. Heroku account has been created
+   3. Heroku CLI (with env variables is installed)
+   4. Requirements have not been added without adding them to requirements.txt
+
+1. Create a directory for the application
+```
+$ heroku create <project name>
+```
+
+2. Create Heroku project of the local application
+```
+$ git remote add heroku
+$ git add .
+$ git commit -m "Inital heroku commit"
+$ git push heroku master
+```
+
+3. Add a database to heroku
+```
+$ heroku config:set HEROKU=1
+$ heroku addons:add heroku-postgresql:hobby-dev
+```
+
+4. Create a first user
+```
+$ heroku pg:psql
+::DATABASE=> INSERT INTO account ("userID", "firstName", "lastName", "password", "admin") VALUES ('admin@gmail.com', 'adminFirst', 'adminLast', '$5$rounds=535000$aNFMJXNyMUPXjgZm$wfsCerqK8Pfzl/2P5l.6BuPvTsqI1/Tv5QxjrGYhLq.', 1);
 ```
