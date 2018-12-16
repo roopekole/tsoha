@@ -21,31 +21,39 @@ Please read Readme to learn about the application overview
 
 2. Supervisor use cases
 	
-	2.1. Authenticating to the system
+	2.1 Registrating to the system
+	
+	2.2. Authenticating to the system
 	- Execution of actions which require authentication and supervisor level authorization
-	2.2. Entering new theses proposals into the system
+	
+	2.3. Entering new theses proposals into the system
 	- Adding new thesis proposals by entering:
 		* Title and / or description
 		* Scientific field(s)
-	2.3. Reserving a thesis for a student
+	
+	2.4. Reserving a thesis for a student
 	- Access the self-created theses for editing
 	    * Fill level (MSc. / BSc. thesis)
 		* Fill author information
-	2.4. Finalizing the thesis
+	
+	2.5. Finalizing the thesis
 	- Changing the status of the thesis to be completed	
 
 3. Administrator use cases
 	
 	3.1. Authentication to the system
 	- Execution of actions which require authentication and administrator level authorization
+	
 	3.2. Administering the theses
 	- User may edit any theses at any time
 	- User may delete theses which are in available state
 	- User may change the status of any theses at any time
 	- User may create theses
+	
 	3.3. Administering the master data
 	- Add/edit/delete users 
 	    * Add users
+		* Activate registered account
 		* Change user details
 		* Elevate user permissions
 		* Delete irrelevant users
@@ -109,3 +117,18 @@ UPDATE account SET "modifiedOn"=CURRENT_TIMESTAMP, admin=? WHERE account."userID
 ```sql
 DELETE FROM account WHERE account."userID" = ?
 ```
+
+_Aggregate queries are sligtly different based on the SQL (here SQLite)_
+
+- Getting notification about registered users (aggregate query)
+```sql
+SELECT account.userID, COUNT(thesis.thesisID) FROM account
+    LEFT JOIN thesis ON thesis.userID = account.userID
+    GROUP BY account.userID
+```
+
+- Displaying the number of submitted theses of the supervisor (aggregate query)
+```sql
+SELECT COUNT(userID) FROM account WHERE inactive
+```
+

@@ -37,6 +37,11 @@ User who has logged in to the application may log out through landing page by pr
 
 Logout returns the user to the landing page.
 
+## Registering
+
+Supervisor may register to the system. Pressing 'Register' in the landing page opens a registration form. All fields need to be filled. After registration login is possible only after an admin user has verified the account information and activated the user account.
+
+If user tries to login without active account, error will be displayed. User should contact administrator to have the account activated. 
 
 ## Thesis list
 
@@ -157,6 +162,12 @@ User management editors may be accessed by clicking 'Users' link the in the 'Mas
 7. Last modified
 8. Action buttons
 
+**Viewing a single user**
+Single user record may be viewed by double clicking a user record in the user table
+
+**Activating a registered user**
+When user has registered the account will be inactive and user may not login to the system. By clicking 'Activate' button next to the inactive user, the user account will become active.
+
 **Creating and editing a user**
 User may be created by pressing 'Create' button on top of the 'User table'. An existing user may be edited by clicking 'Edit' button next to the user record.
 
@@ -174,7 +185,6 @@ Scientific areas management editor may be accessed by clicking 'Scientific areas
 'Scientific areas table' displays the following information regarding the sciences in the system
 1. Science (name of the scientific area)
 2. Created
-
 
 **Creating **
 Scientific area may be created by pressing 'Create' button on top of the 'Scientific areas table'. 

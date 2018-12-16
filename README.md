@@ -1,4 +1,4 @@
-# tsoha
+﻿# tsoha
 Tietokantasovellus, harjoitustyö
 
 Sovellus osoitteessa: https://morning-garden-53294.herokuapp.com/ 
@@ -28,3 +28,11 @@ Toimintoja:
 - Luetteloiden selaus, sorttaus ja niistä etsiminen
 
 Dokumentaatio (englanniksi)
+
+[Käyttäjäopas (User manual)](https://github.com/roopekole/tsoha/blob/master/documentation/user_manual.md)
+
+[Käyttötapauslistaus (Use cases)](https://github.com/roopekole/tsoha/blob/master/documentation/usecases.md)
+
+[Asennusopas (Installation guide)](https://github.com/roopekole/tsoha/blob/master/documentation/installation_guide.md)
+
+[Tietokantakaavio (Database chart)](https://github.com/roopekole/tsoha/blob/master/documentation/database_chart.txt)
